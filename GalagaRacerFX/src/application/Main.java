@@ -41,6 +41,8 @@ public class Main extends Application {
 		try {
 			Sphere cockpit = new Sphere(10);
 			
+
+			
 			ArrayList<Box> boxes = new ArrayList<Box>();
 			
 			for (int i = 0; i < NUM_OF_BOXES; i++ ) {
@@ -129,8 +131,6 @@ public class Main extends Application {
 		
 	}
 
-	boolean isEven(double num) { return ((num % 2) == 0); }
-
 	private void alignBoxesTolane(int distanceFromCenter, ArrayList<Box> boxes) {
 		PhongMaterial material = new PhongMaterial(Color.DARKCYAN);
 		
@@ -145,7 +145,7 @@ public class Main extends Application {
 			newDepth = newDepth + BOX_DEPTH; //update box depth
 			
 			
-			if (isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
+			if (Util.isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
 		}
 		
 		newDepth = BOX_DEPTH;
@@ -159,7 +159,7 @@ public class Main extends Application {
 			newDepth = newDepth + BOX_DEPTH; //update box depth
 			
 			
-			if (isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
+			if (Util.isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
 		}
 	}
 
