@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.geometry.Point3D;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,11 +20,10 @@ public class Main extends Application {
 	public final int WIDTH 			= 1400;
 	public final int HEIGHT 		= 800;
 	
-	public final int BOX_WIDTH  	= 20;
+	//box 
+	public final int BOX_WIDTH  	= 20; 
 	public final int BOX_HEIGHT 	= 100;
 	public final int BOX_DEPTH  	= 100;
-	
-
 	
 	public final int NUM_OF_BOXES = 20;
 	public final int DISTANCE_FROM_CENTER = 100;
@@ -41,17 +41,11 @@ public class Main extends Application {
 		try {
 			Sphere cockpit = new Sphere(10);
 			
+			laneNodes lane = new laneNodes(20, new Point3D(20, 100, 100));
 
-			
-			ArrayList<Box> boxes = new ArrayList<Box>();
-			
-			for (int i = 0; i < NUM_OF_BOXES; i++ ) {
-				boxes.add(i, new Box(BOX_WIDTH, BOX_HEIGHT, BOX_DEPTH));
-			}
-			
 			Group group = new Group();
 
-			addBoxesToGroup(group, boxes);
+			lane.addLaneToGroup(group);
 			
 			
 			group.getChildren().add(cockpit);
@@ -70,7 +64,6 @@ public class Main extends Application {
 			cockpit.translateYProperty().set(25);
 			cockpit.translateZProperty().set(140);
 			
-			alignBoxesTolane(DISTANCE_FROM_CENTER, boxes);
 			
 			primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 				switch(event.getCode())
@@ -131,44 +124,6 @@ public class Main extends Application {
 		
 	}
 
-	private void alignBoxesTolane(int distanceFromCenter, ArrayList<Box> boxes) {
-		PhongMaterial material = new PhongMaterial(Color.DARKCYAN);
-		
-		int newDepth = BOX_DEPTH;
-		
-		for (int i = (NUM_OF_BOXES/2); i-- > 0; ) {
-			Box currentBox = boxes.get(i);
-			
-			currentBox.translateXProperty().set(distanceFromCenter);
-			currentBox.translateZProperty().set(newDepth);
-			
-			newDepth = newDepth + BOX_DEPTH; //update box depth
-			
-			
-			if (Util.isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
-		}
-		
-		newDepth = BOX_DEPTH;
-		
-		for (int i = NUM_OF_BOXES; i-- > (NUM_OF_BOXES/2); ) {
-			Box currentBox = boxes.get(i);
-			
-			currentBox.translateXProperty().set(-distanceFromCenter);
-			currentBox.translateZProperty().set(newDepth);
-			
-			newDepth = newDepth + BOX_DEPTH; //update box depth
-			
-			
-			if (Util.isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
-		}
-	}
-
-	private void addBoxesToGroup(Group group, ArrayList<Box> boxes) {
-	    for (Box b : boxes) {
-	    	group.getChildren().add(b);
-	      }
-		
-	}
 
 	public static void main(String[] args) {
 		launch(args);
