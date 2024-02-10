@@ -21,7 +21,7 @@ public class Main extends Application {
 	
 	public final int BOX_WIDTH  	= 20;
 	public final int BOX_HEIGHT 	= 100;
-	public final int BOX_DEPTH  	= 100;
+	public final int BOX_DEPTH  	= 50;
 	
 
 	
