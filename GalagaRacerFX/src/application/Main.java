@@ -39,7 +39,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Sphere cockpit = new Sphere(50);
+			Sphere cockpit = new Sphere(10);
 			
 			ArrayList<Box> boxes = new ArrayList<Box>();
 			
@@ -50,6 +50,9 @@ public class Main extends Application {
 			Group group = new Group();
 
 			addBoxesToGroup(group, boxes);
+			
+			
+			group.getChildren().add(cockpit);
 
 			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
 			scene.setFill(Color.BLACK);
@@ -58,9 +61,12 @@ public class Main extends Application {
 			gameCamera c = new gameCamera(scene);
 			
 
-			c.setCamera(0, 0, -500);
+			c.setCamera(0, 0, 0);
 			c.setNearFarClip(1, 2000);
 			
+			cockpit.translateXProperty().set(0);
+			cockpit.translateYProperty().set(25);
+			cockpit.translateZProperty().set(140);
 			
 			alignBoxesTolane(DISTANCE_FROM_CENTER, boxes);
 			
@@ -70,9 +76,11 @@ public class Main extends Application {
 
 					case W:
 						c.moveCamera(0, 0, 50);
+						cockpit.translateZProperty().set(cockpit.getTranslateZ() + 50);
 						break;
 					case S:
 						c.moveCamera(0, 0, -50);
+						cockpit.translateZProperty().set(cockpit.getTranslateZ() - 50);
 						break;
 						
 					case E:
