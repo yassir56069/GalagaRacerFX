@@ -39,7 +39,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Sphere cockpit = new Sphere(50);
+			Sphere cockpit = new Sphere(10);
 			
 			ArrayList<Box> boxes = new ArrayList<Box>();
 			
@@ -50,7 +50,10 @@ public class Main extends Application {
 			Group group = new Group();
 
 			addBoxesToGroup(group, boxes);
+			
+			group.getChildren().add(cockpit);
 
+			
 			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
 			scene.setFill(Color.BLACK);
 			
@@ -58,8 +61,12 @@ public class Main extends Application {
 			gameCamera c = new gameCamera(scene);
 			
 
-			c.setCamera(0, 0, -500);
+			c.setCamera(0, 0, -200);
 			c.setNearFarClip(1, 2000);
+			
+			cockpit.translateXProperty().set(0);
+			cockpit.translateYProperty().set(20);
+			cockpit.translateZProperty().set(-80);
 			
 			
 			alignBoxesTolane(80, boxes);
@@ -70,9 +77,11 @@ public class Main extends Application {
 
 					case W:
 						c.moveCamera(0, 0, 50);
+						cockpit.translateZProperty().set(cockpit.getTranslateZ() + 50);
 						break;
 					case S:
 						c.moveCamera(0, 0, -50);
+						cockpit.translateZProperty().set(cockpit.getTranslateZ() - 50);
 						break;
 						
 					case E:
@@ -121,7 +130,7 @@ public class Main extends Application {
 		
 	}
 
-	boolean isEven(double num) { return ((num % 2) == 0); }
+
 
 	private void alignBoxesTolane(int distanceFromCenter, ArrayList<Box> boxes) {
 		PhongMaterial material = new PhongMaterial(Color.DARKCYAN);
@@ -137,7 +146,7 @@ public class Main extends Application {
 			newDepth = newDepth + BOX_DEPTH; //update box depth
 			
 			
-			if (isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
+			if (Util.isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
 		}
 		
 		newDepth = BOX_DEPTH;
@@ -151,7 +160,7 @@ public class Main extends Application {
 			newDepth = newDepth + BOX_DEPTH; //update box depth
 			
 			
-			if (isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
+			if (Util.isEven(i)) currentBox.setMaterial(material); // color box in checkered fashion
 		}
 	}
 
