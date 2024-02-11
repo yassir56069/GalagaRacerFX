@@ -10,5 +10,10 @@ public final class Util {
      * @return
      */
     public static boolean isEven(double num) { return ((num % 2) == 0); }
+    
+    
+    public static int booleanToInt(boolean bool) {
+        return (bool) ? 1 : 0;
+    }
 
 }

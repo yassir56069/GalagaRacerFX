@@ -99,7 +99,7 @@ public class PlayerShip {
 	 * @param Y : coord (double)
 	 * @param Z : coord (double)
 	 */
-	public void MovePlayerPosition(Lane laneReference, double X, double Y, double Z)
+	public void MovePlayerPositionRAW(Lane laneReference, double X, double Y, double Z)
 	{
 		
 		
@@ -114,11 +114,46 @@ public class PlayerShip {
 		updateLanePillarsPosition(laneReference);
 	}
 	
-	private void updateLanePillarsPosition(Lane laneReference)
+	
+	public void MovePlayerPosition(double X, double Y, double Z)
+	{
+		this.shipModel.setTranslateX(this.shipModel.getTranslateX() + X);
+		this.shipModel.setTranslateY(this.shipModel.getTranslateY() + Y);
+		this.shipModel.setTranslateZ(this.shipModel.getTranslateZ() + Z);
+		
+		this.currPosition = new Point3D(this.currPosition.getX() + X, this.currPosition.getY() + Y, this.currPosition.getZ() + Z);
+		
+		
+		bindCamera();
+	
+	}
+	
+	public void MovePlayerZ(double speed)
+	{
+		this.shipModel.setTranslateZ(this.shipModel.getTranslateZ() + speed);
+		
+		this.currPosition = new Point3D(this.currPosition.getX(), this.currPosition.getY(), this.currPosition.getZ() + speed);
+		
+		
+		bindCamera();
+	
+	}
+	
+	public void MovePlayerLeftRight(double speed)
+	{
+		this.shipModel.setTranslateX(this.shipModel.getTranslateX() + speed);
+		
+		this.currPosition = new Point3D(this.currPosition.getX() + speed, this.currPosition.getY(), this.currPosition.getZ());
+		
+		
+		bindCamera();
+	
+	}
+	
+	
+	public void updateLanePillarsPosition(Lane laneReference)
 	{
 		double tailDistance = this.calculateDistanceToTail(laneReference.getLeftTail().getTranslateZ());
-		
-		System.out.println(tailDistance);
 		
 		if (tailDistance > 200) {
 			laneReference.movePillarsZ();

@@ -52,6 +52,8 @@ public class GameCamera {
 	public GameCamera(Scene s)
 	{
 		this.camera = new PerspectiveCamera(true);
+		
+		
 		s.setCamera(camera);
 	}
 	

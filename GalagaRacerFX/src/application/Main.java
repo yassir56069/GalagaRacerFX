@@ -3,18 +3,11 @@ package application;
 
 
 
-import javafx.util.Duration;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Sphere;
 
@@ -24,6 +17,7 @@ public class Main extends Application {
 	// Constants
 	public final int WIDTH 			= 1400;
 	public final int HEIGHT 		= 800;
+	
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -34,6 +28,8 @@ public class Main extends Application {
 
 			lane.addLaneToGroup(group);
 
+			
+			// Scene
 			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
 			scene.setFill(Color.BLACK);
 			
@@ -42,55 +38,22 @@ public class Main extends Application {
 			c.setCamera(0, 0, 0);
 			c.setNearFarClip(1, 2000);
 			
+			// player
 			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
-			player.setCameraOffset(new Point3D(0, -20, -120));
 
-			
-			group.getChildren().add(player.getShipModel());
-
-	        // Create a Timeline for ship movement
 		    
-	        Duration duration = Duration.millis(100); 
+			player.setCameraOffset(new Point3D(0, -20, -120));
+			group.getChildren().add(player.getShipModel());
+			
 
-	        KeyFrame keyFrame = new KeyFrame(duration, event -> player.MovePlayerPosition(lane, 0, 0, 50));
-	        Timeline timeline = new Timeline(keyFrame);
-	        timeline.setCycleCount(Timeline.INDEFINITE);
-	        timeline.play();
-			
-			primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-				switch(event.getCode())
-				{
-					
-					case W:
-						
-						player.MovePlayerPosition(lane, 0, 0, 50);
-						break;
-					case S:
-						
-						player.MovePlayerPosition(lane, 0 , 0, -20);
-						break;
-					
-					case A:
-						player.MovePlayerPosition(lane, -1, 0, 0);
-						break;
-						
-					case D:
-						player.MovePlayerPosition(lane, 1, 0, 0);
-						break;
-						
-				default:
-					
-					break;
-				}
-			});
-			
+			ControlShip controller = new ControlShip(player, scene, 0, 50.0, 0.03);
 
 			
 			primaryStage.setTitle("GalaRacerFx");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-
+			controller.startGameLoop(lane);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
