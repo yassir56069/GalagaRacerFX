@@ -33,7 +33,7 @@ import javafx.scene.Scene;
  * gameCamera.moveCamera(10, 0, 0);
  * 
  * // Adjust near and far clip
- * gameCamera.setClipProperties(1, 1000);
+ * gameCamera.setNearFarClip(1, 1000);
  * }
  * </pre>
  * 

@@ -56,12 +56,14 @@ public class Lane {
 	private int laneDepth;
 
 	
+
+
 	/**laneNodes
 	 * populates the nodesList with nodes
 	 * <p> nodesList is an Arraylist with (numberOfNodes * 2) number of elements</p>
 	 * 
+	 * @param pillarRowSize - number of pillars used in ONE side of the lane.
 	 * @param laneIS 		- The inner spacing of the lanes between each other.
-	 * @param numberOfNodes - number of nodes used in ONE side of the lane.
 	 * @param nodeDim 		- dimensions of each individual node.
 	 */
 	public Lane(int pillarRowSize, int laneIS, Point3D pillarDim) {
@@ -141,7 +143,6 @@ public class Lane {
 		}
 		
 		
-		System.out.println(this.laneDepth);
 		
 	}
 
@@ -158,6 +159,10 @@ public class Lane {
 	}
 	
 
+	public int getPillarDepth() {
+		return pillarDepth;
+	}
+	
 	public ArrayList<Box> getPillarsList() {
 		return pillarsList;
 	}
@@ -170,12 +175,12 @@ public class Lane {
 		return laneSize;
 	}
 
-	public int getRightTail() {
-		return rightTail;
+	public Box getRightTail() {
+		return pillarsList.get(rightTail);
 	}
 
-	public int getLeftTail() {
-		return leftTail;
+	public Box getLeftTail() {
+		return pillarsList.get(rightTail);
 	}
 
 	public Point3D getNodeDimensions() {

@@ -44,12 +44,11 @@ public class PlayerShip {
 		this.cameraOffset = new Point3D(0, -20, -120);
 		
 		this.initPosition = playerPos;
+		this.currPosition = playerPos;
 		this.shipModel = model;
 		
 
 		bindCamera();
-		
-
 	}
 	
 	private void bindCamera() {
@@ -100,14 +99,41 @@ public class PlayerShip {
 	 * @param Y : coord (double)
 	 * @param Z : coord (double)
 	 */
-	public void MovePlayerPosition(double X, double Y, double Z)
+	public void MovePlayerPosition(Lane laneReference, double X, double Y, double Z)
 	{
-		this.currPosition = new Point3D(X,Y,Z);
+		
 		
 		this.shipModel.translateXProperty().set(this.shipModel.getTranslateX() + X);
 		this.shipModel.translateYProperty().set(this.shipModel.getTranslateY() + Y);
 		this.shipModel.translateZProperty().set(this.shipModel.getTranslateZ() + Z);
+		
+		this.currPosition = new Point3D(this.currPosition.getX() + X, this.currPosition.getY() + Y, this.currPosition.getZ() + Z);
+		
+		
 		bindCamera();
+		updateLanePillarsPosition(laneReference);
+	}
+	
+	private void updateLanePillarsPosition(Lane laneReference)
+	{
+		double tailDistance = this.calculateDistanceToTail(laneReference.getLeftTail().getTranslateZ());
+		
+		System.out.println(tailDistance);
+		
+		if (tailDistance > 200) {
+			laneReference.movePillarsZ();
+		}
+	}
+	
+	/**
+	 * Calculates the distance between the player's ship model and the tail pillars of the lane.
+	 * 
+	 * @param shipPosition The current position of the player's ship model.
+	 * @param tailPositionZ The Z-axis position of the tail pillars.
+	 * @return The distance between the ship model and the tail pillars in the Z-axis.
+	 */
+	private double calculateDistanceToTail(double tailPositionZ) {
+	    return (currPosition.getZ() - tailPositionZ);
 	}
 	
 	public Shape3D getShipModel() {
