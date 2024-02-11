@@ -9,8 +9,34 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 
 /**
- * Class denoting the placement of a lane of box objects (pillars) on the left and the right of the
- * Scene.
+ * The {@code Lane} class represents a lane in a space racing game, consisting of a series of pillars
+ * on the left and right for the player's ship to navigate through.
+ * 
+ * <p>The lane is defined by alternating pillars, forming a pathway for the player's ship. It is
+ * characterized by various properties, including the color of the alternating pillars, the list
+ * of pillars, dimensions of the pillars, depth of the pillars, inner space between left and right
+ * pillars, total size of the lane, tails of the left and right lanes, and the depth of the lane in
+ * the Z-axis.
+ * 
+ * <p>The alternating color of the pillars is specified using a {@link javafx.scene.paint.PhongMaterial}
+ * variable named {@code material}. The actual pillars are stored in an {@link java.util.ArrayList} of
+ * {@link javafx.scene.shape.Box} objects, named {@code pillarsList}.
+ * 
+ * <p>The dimensions of the pillars are stored in a private {@link javafx.geometry.Point3D} variable
+ * named {@code pillarDimensions}. Additionally, the depth of the pillars is redundantly stored in an
+ * integer variable named {@code pillarDepth} for convenience when checking the Z value of
+ * {@code pillarDimensions}.
+ * 
+ * <p>The inner space between the left and right pillars is specified by the private integer
+ * variable {@code laneInnerSpace}. The total size of the lane, representing the number of pillars,
+ * is stored in an integer variable named {@code laneSize}.
+ * 
+ * <p>The tail ends of the left and right lanes are represented by {@code rightTail} and {@code leftTail}
+ * respectively. The overall length of the lane in the Z-axis is stored in a private integer variable
+ * named {@code laneDepth}.
+ * 
+ * @author Yassir Hoossan Buksh
+ * @version 1.0
  */
 public class Lane {
 
@@ -172,32 +198,5 @@ public class Lane {
 		return laneDepth;
 	}
 
-
-//	private void addBoxToLane(ArrayList<Box> boxes) {
-//		total_updated_depth += BOX_DEPTH;
-//		
-//		// right
-//		
-//		Box lastBoxR = boxes.get(rightTail);
-//		lastBoxR.translateZProperty().set(total_updated_depth);
-//		rightTail --;
-//		
-//		if (rightTail == -1 ) {
-//			rightTail = (NUM_OF_BOXES/2) - 1;
-//		}
-//		
-//		// left
-//		
-//		Box lastBoxL = boxes.get(leftTail);
-//		lastBoxL.translateZProperty().set(total_updated_depth);
-//		leftTail --;
-//		
-//		if (leftTail == ((NUM_OF_BOXES/2) - 1)) {
-//			leftTail = NUM_OF_BOXES - 1;
-//		}
-//		
-//		System.out.println("test");
-//		
-//	}
 	
 }

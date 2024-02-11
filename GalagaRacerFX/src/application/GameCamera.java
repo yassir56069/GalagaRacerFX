@@ -1,19 +1,20 @@
 package application;
 
+import javafx.geometry.Point3D;
 import javafx.scene.Camera;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 
-public class gameCamera {
+public class GameCamera {
 
 	public Camera camera;
-	
+	private Point3D initialCameraPosition;
 	
 	/** Creates game camera for viewing the game
 	 * 
 	 * @param Scene s : the scene to render on the camera.
 	 */
-	public gameCamera(Scene s)
+	public GameCamera(Scene s)
 	{
 		this.camera = new PerspectiveCamera(true);
 		s.setCamera(camera);
@@ -28,6 +29,8 @@ public class gameCamera {
 	 */
 	public void setCamera(double X, double Y, double Z)
 	{
+		this.initialCameraPosition = new Point3D(X,Y,Z);
+		
 		camera.translateXProperty().set(X);
 		camera.translateYProperty().set(Y);
 		camera.translateZProperty().set(Z);
@@ -58,6 +61,10 @@ public class gameCamera {
 	public void setNearFarClip(double nearClip, double farClip) {
 		if (nearClip != 0) camera.setNearClip(nearClip);
 		if (farClip != 0) camera.setFarClip(farClip);
+	}
+
+	public Point3D getInitialCameraPosition() {
+		return initialCameraPosition;
 	}
 	
 }

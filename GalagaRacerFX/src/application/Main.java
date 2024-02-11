@@ -20,8 +20,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Sphere cockpit = new Sphere(10);
-			
 			Lane lane = new Lane(10, 100, new Point3D(20, 100, 100));
 
 			Group group = new Group();
@@ -29,34 +27,31 @@ public class Main extends Application {
 			lane.addLaneToGroup(group);
 			
 			
-			group.getChildren().add(cockpit);
+			
 
 			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
 			scene.setFill(Color.BLACK);
 			
 			//gameCamera
-			gameCamera c = new gameCamera(scene);
-			
-
+			GameCamera c = new GameCamera(scene);
 			c.setCamera(0, 0, 0);
 			c.setNearFarClip(1, 2000);
 			
-			cockpit.translateXProperty().set(0);
-			cockpit.translateYProperty().set(25);
-			cockpit.translateZProperty().set(140);
+			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
+			player.setCameraOffset(new Point3D(0, -20, -120));
 			
+			group.getChildren().add(player.getShipModel());
+
 			
 			primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 				switch(event.getCode())
 				{
 
 					case W:
-						c.moveCamera(0, 0, 50);
-						cockpit.translateZProperty().set(cockpit.getTranslateZ() + 50);
+						player.MovePlayerPosition(0, 0, 50);
 						break;
 					case S:
-						c.moveCamera(0, 0, -50);
-						cockpit.translateZProperty().set(cockpit.getTranslateZ() - 50);
+						player.MovePlayerPosition(0, 0, -50);
 						break;
 						
 					case E:
