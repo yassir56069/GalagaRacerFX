@@ -70,8 +70,16 @@ public class ControlShip {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-            	System.out.println(currSpeed);
+            	
                 // Update game logic in each frame
+            	
+            	//collision
+            	if (playerReference.hasCollided(lane))
+            	{
+            		System.out.println("Collision Detected!");
+            	}
+            	
+            	// movement
                 if (movingZ) {
                 	moveShip();
                 }
@@ -84,7 +92,7 @@ public class ControlShip {
         };
         gameLoop.start();
     }
-	
+
 	private void moveShip()
 	{	if (movingZ)
 		{
@@ -120,9 +128,7 @@ public class ControlShip {
 		}
 		if ( (int) currSpeed == minSpeed) currSpeed = minSpeed;
 	}
-    
-    
-    
+      
     private void handleKeyPress(KeyCode code) {
         switch (code) {
             case W:

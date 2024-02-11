@@ -1,8 +1,8 @@
+// TODO Create a parent class "Obstaces/Objects" that contains Lane & (in the future) Asteroids. 
+// 		Use this for collisions.
+
 package application;
 	
-
-
-
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -36,17 +36,17 @@ public class Main extends Application {
 			//gameCamera
 			GameCamera c = new GameCamera(scene);
 			c.setCamera(0, 0, 0);
-			c.setNearFarClip(1, 2000);
+			c.setNearFarClip(1, 4000);
 			
 			// player
 			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
 
 		    
-			player.setCameraOffset(new Point3D(0, -20, -120));
+			player.setCameraOffset(new Point3D(0, -20, -200));
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, scene, 0, 50.0, 0.03);
+			ControlShip controller = new ControlShip(player, scene, 10, 50.0, 0.05);
 
 			
 			primaryStage.setTitle("GalaRacerFx");

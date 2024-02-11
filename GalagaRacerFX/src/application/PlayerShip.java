@@ -1,6 +1,7 @@
 package application;
 
 import javafx.geometry.Point3D;
+import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
 
 /**
@@ -159,6 +160,22 @@ public class PlayerShip {
 			laneReference.movePillarsZ();
 		}
 	}
+	
+	
+    public boolean hasCollided(Lane lane)
+    {
+    	boolean hasCollided = false;
+    	for (Box i:lane.getPillarsList()) {
+    		if (i.getBoundsInParent().intersects(this.shipModel.getBoundsInParent())) {
+    			hasCollided = true;
+    			break;
+    		}
+    	}
+    	
+		return hasCollided;
+    }
+    
+	
 	
 	/**
 	 * Calculates the distance between the player's ship model and the tail pillars of the lane.
