@@ -5,6 +5,41 @@ import javafx.scene.Camera;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 
+/**
+ * The {@code GameCamera} class encapsulates a JavaFX camera object and a {@link javafx.geometry.Point3D}.
+ * It is designed to handle setting and moving the camera within the game environment, as well as adjusting
+ * the near clip and far clip properties of the camera for optimal viewing.
+ * 
+ * <p>The class provides a public {@link javafx.scene.Camera} object, named {@code camera}, which can be
+ * accessed to manipulate the camera properties directly.
+ * 
+ * <p>Additionally, the class includes a {@code Point3D} variable named {@code position}, representing
+ * the current position of the camera in the 3D space.
+ * 
+ * <p>Methods in this class allow for setting and moving the camera, as well as adjusting the near clip
+ * and far clip properties. This class serves as a convenient abstraction for managing the camera within
+ * a game environment.
+ * 
+ * <p>Example usage:
+ * <pre>
+ * {@code
+ * // Create a GameCamera instance
+ * GameCamera gameCamera = new GameCamera();
+ * 
+ * // Set the camera position
+ * gameCamera.setPosition(new Point3D(0, 0, -200));
+ * 
+ * // Move the camera
+ * gameCamera.moveCamera(10, 0, 0);
+ * 
+ * // Adjust near and far clip
+ * gameCamera.setClipProperties(1, 1000);
+ * }
+ * </pre>
+ * 
+ * @author Yassir Hoossan Buksh
+ * @version 1.0
+ */
 public class GameCamera {
 
 	public Camera camera;

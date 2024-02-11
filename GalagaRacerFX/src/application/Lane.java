@@ -64,12 +64,12 @@ public class Lane {
 	 * @param numberOfNodes - number of nodes used in ONE side of the lane.
 	 * @param nodeDim 		- dimensions of each individual node.
 	 */
-	public Lane(int pillarRowSize, int laneIS, Point3D nodeDim) {
+	public Lane(int pillarRowSize, int laneIS, Point3D pillarDim) {
 		this.laneInnerSpace 	= laneIS;
 		this.laneSize 			= pillarRowSize * 2;
 		this.rightTail 			= (laneSize/2) - 1;
 		this.leftTail 			= laneSize - 1;
-		this.pillarDimensions 	= nodeDim;
+		this.pillarDimensions 	= pillarDim;
 		
 		this.pillarDepth 		= (int) pillarDimensions.getZ();
 		
@@ -77,7 +77,7 @@ public class Lane {
 		
 		
 		for (int i = 0; i < pillarRowSize * 2; i++ ) {
-			pillarsList.add(i, new Box(nodeDim.getX(), nodeDim.getY(), nodeDim.getZ()));
+			pillarsList.add(i, new Box(pillarDim.getX(), pillarDim.getY(), pillarDim.getZ()));
 		}
 		
 		alignNodesToLane();
