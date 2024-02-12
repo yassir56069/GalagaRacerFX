@@ -3,10 +3,6 @@
 
 package application;
 	
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;

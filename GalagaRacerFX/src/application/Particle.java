@@ -1,13 +1,8 @@
 package application;
 
-import java.util.Random;
-import java.io.FileInputStream;
 
 import javafx.geometry.Point3D;
 import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
@@ -50,9 +45,6 @@ public class Particle {
     	PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(c);
         material.setSpecularColor(Color.WHITE);
-//        Image image = new Image("file:illumination_map.png"); 
-//        material.setDiffuseMap(image);
-
         
         sphere = new Sphere(0.1);
 
