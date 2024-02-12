@@ -3,6 +3,10 @@
 
 package application;
 	
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -22,12 +26,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Lane lane = new Lane(30, 100, new Point3D(20, 100, 100));
+			Lane lane = new Lane(30, 90, new Point3D(20, 100, 100));
 
 			Group group = new Group();
+			
 
 			lane.addLaneToGroup(group);
-
+			
 			
 			// Scene
 			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
@@ -42,18 +47,21 @@ public class Main extends Application {
 			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
 
 		    
-			player.setCameraOffset(new Point3D(0, -20, -200));
+			player.setCameraOffset(new Point3D(0, -20, -150));
 			group.getChildren().add(player.getShipModel());
 			
 
 			ControlShip controller = new ControlShip(player, scene, 10, 50.0, 0.05);
 
+			group.getChildren().add(controller.particleGroup);
+			
 			
 			primaryStage.setTitle("GalaRacerFx");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			controller.startGameLoop(lane);
+			controller.startGameLoop(lane, player);
+	
 			
 		} catch(Exception e) {
 			e.printStackTrace();

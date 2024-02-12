@@ -1,6 +1,12 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Point3D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
@@ -48,6 +54,12 @@ public class ControlShip {
 
 	private boolean movingZ, movingL, movingR;
 
+	//particles
+    public List<Particle> particles = new ArrayList<>();
+    public Group particleGroup = new Group();
+    
+    private Emitter e = new ThrustEmitter(particles, particleGroup);
+	
 	
 	public ControlShip(PlayerShip player, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
 	{
@@ -66,15 +78,18 @@ public class ControlShip {
 
 	}
 
-    public void startGameLoop(Lane lane) {
+    public void startGameLoop(Lane lane, PlayerShip player) {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-            	
+            	double particleSpeed = currSpeed / 10;
+            
                 // Update game logic in each frame
+            	updateParticles(); //particles
+            	e.emit(new Point3D(player.getCurrPosition().getX(),player.getCurrPosition().getY() + 5,(player.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 1.5), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
             	
             	//collision
-            	if (playerReference.hasCollided(lane))
+            	if (player.hasCollided(lane))
             	{
             		System.out.println("Collision Detected!");
             	}
@@ -82,17 +97,34 @@ public class ControlShip {
             	// movement
                 if (movingZ) {
                 	moveShip();
+                	
                 }
                 else
                 {
                 	stopShip();
                 }
-                playerReference.updateLanePillarsPosition(lane);
+                player.updateLanePillarsPosition(lane);
             }
         };
         gameLoop.start();
     }
 
+    
+    public void updateParticles() {
+        Iterator<Particle> iterator = particles.iterator();
+        while (iterator.hasNext()) {
+            Particle particle = iterator.next();
+            particle.update();
+
+            // Remove particles that are no longer visible or active
+            if (!particle.isVisible()) {
+                iterator.remove();
+                particleGroup.getChildren().remove(particle.getSphere());
+            }
+        }
+    }
+	
+    
 	private void moveShip()
 	{	if (movingZ)
 		{
