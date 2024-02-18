@@ -1,12 +1,13 @@
+// TODO Create a parent class "Obstaces/Objects" that contains Lane & (in the future) Asteroids. 
+// 		Use this for collisions.
+
 package application;
 	
-
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Sphere;
 
@@ -16,55 +17,46 @@ public class Main extends Application {
 	// Constants
 	public final int WIDTH 			= 1400;
 	public final int HEIGHT 		= 800;
+	
 
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Sphere cockpit = new Sphere(10);
-			
-			Lane lane = new Lane(10, 100, new Point3D(20, 100, 100));
+			Lane lane = new Lane(30, 90, new Point3D(20, 100, 100));
 
 			Group group = new Group();
-
+			
+			LightHandler.setAmbientLight(group, Color.BLACK);
+			
 			lane.addLaneToGroup(group);
 			
 			
-			group.getChildren().add(cockpit);
-
+			// Scene
 			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
 			scene.setFill(Color.BLACK);
 			
 			//gameCamera
-			gameCamera c = new gameCamera(scene);
-			
-
+			GameCamera c = new GameCamera(scene);
 			c.setCamera(0, 0, 0);
-			c.setNearFarClip(1, 2000);
+			c.setNearFarClip(1, 4000);
 			
-			cockpit.translateXProperty().set(0);
-			cockpit.translateYProperty().set(25);
-			cockpit.translateZProperty().set(140);
+			// player
+			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
 			
+		    
+			player.setCameraOffset(new Point3D(0, -20, -150));
+			group.getChildren().add(player.getShipModel());
 			
-			primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-				switch(event.getCode())
-				{
 
-					case W:
-						c.moveCamera(0, 0, 50);
-						cockpit.translateZProperty().set(cockpit.getTranslateZ() + 50);
-						break;
-					case S:
-						c.moveCamera(0, 0, -50);
-						cockpit.translateZProperty().set(cockpit.getTranslateZ() - 50);
-						break;
-						
-					case E:
-						lane.movePillarsZ();
-				default:
-					break;
-				}
-			});
+			ControlShip controller = new ControlShip(player, scene, 10, 50.0, 0.05);
+			
+			
+			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE, player.getCurrPosition());
+			
+			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,-100));
+//			group.getChildren().add(LightHandler.addLightSource(Color.WHITE, null));		
+
+			group.getChildren().add(controller.particleGroup);
 			
 			
 			primaryStage.setTitle("GalaRacerFx");
@@ -72,6 +64,9 @@ public class Main extends Application {
 			primaryStage.show();
 			
 
+			LightHandler.getAllLightSources(primaryStage);
+			controller.startGameLoop(lane, player);
+	
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -79,6 +74,8 @@ public class Main extends Application {
 	}
 	
 
+
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
