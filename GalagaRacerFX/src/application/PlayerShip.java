@@ -31,6 +31,7 @@ public class PlayerShip {
 
 	private Shape3D shipModel;
 	
+	
 	private GameCamera cameraReference;
 	
 	/**

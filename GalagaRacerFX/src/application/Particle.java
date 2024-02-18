@@ -32,6 +32,7 @@ public class Particle {
     private Sphere sphere;
     private double life;
     private double speedX, speedY, speedZ;
+    private PhongMaterial material = new PhongMaterial();
 
     /**
      * Constructs a new {@code Particle} with a random initial velocity.
@@ -42,9 +43,9 @@ public class Particle {
     	this.maxLife = maxLife;
     	this.gravity = gravity;
     	
-    	PhongMaterial material = new PhongMaterial();
+    	
         material.setDiffuseColor(c);
-        material.setSpecularColor(Color.WHITE);
+        material.setSpecularColor(Color.PURPLE);
         
         sphere = new Sphere(0.1);
 

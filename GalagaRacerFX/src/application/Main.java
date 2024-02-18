@@ -26,7 +26,8 @@ public class Main extends Application {
 
 			Group group = new Group();
 			
-
+			LightHandler.setAmbientLight(group, Color.BLACK);
+			
 			lane.addLaneToGroup(group);
 			
 			
@@ -41,13 +42,19 @@ public class Main extends Application {
 			
 			// player
 			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
-
+			
 		    
 			player.setCameraOffset(new Point3D(0, -20, -150));
 			group.getChildren().add(player.getShipModel());
 			
 
 			ControlShip controller = new ControlShip(player, scene, 10, 50.0, 0.05);
+			
+			
+			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE, player.getCurrPosition());
+			
+			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,-100));
+//			group.getChildren().add(LightHandler.addLightSource(Color.WHITE, null));		
 
 			group.getChildren().add(controller.particleGroup);
 			
@@ -56,6 +63,8 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
+
+			LightHandler.getAllLightSources(primaryStage);
 			controller.startGameLoop(lane, player);
 	
 			
@@ -65,6 +74,8 @@ public class Main extends Application {
 	}
 	
 
+
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
