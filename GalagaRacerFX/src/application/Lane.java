@@ -1,9 +1,11 @@
 package application;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -41,6 +43,7 @@ import javafx.scene.shape.Box;
 public class Lane {
 
 	private PhongMaterial material = new PhongMaterial(Color.DARKCYAN);
+	private PhongMaterial material_alt = new PhongMaterial(Color.GRAY);
 	
 	public ArrayList<Box> pillarsList = new ArrayList<Box>();
 	
@@ -78,6 +81,10 @@ public class Lane {
 		this.laneDepth 			= (int) (pillarRowSize * pillarDepth );
 		
 		
+
+		Image image = new Image(String.valueOf(new File("file:./src/application/rock2_bump.jpg")));
+		material.setBumpMap(image);
+		
 		for (int i = 0; i < pillarRowSize * 2; i++ ) {
 			pillarsList.add(i, new Box(pillarDim.getX(), pillarDim.getY(), pillarDim.getZ()));
 		}
@@ -99,6 +106,8 @@ public class Lane {
 			
 			
 			if (Util.isEven(i)) currentNode.setMaterial(material); // color box in checkered fashion
+			else 
+				currentNode.setMaterial(material_alt);
 		}
 		
 		newDepth =  (int) this.pillarDimensions.getZ(); 
@@ -113,6 +122,8 @@ public class Lane {
 			
 			
 			if (Util.isEven(i)) currentNode.setMaterial(material); // color box in checkered fashion
+			else 
+				currentNode.setMaterial(material_alt);
 		}
 	}
 

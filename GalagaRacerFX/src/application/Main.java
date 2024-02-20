@@ -53,7 +53,6 @@ public class Main extends Application {
 			LightHandler.addLightInstance(group, Color.YELLOW, new Point3D(0,0,0));
 			
 			
-			
 			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE,  player.getCurrPosition() );
 			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,0));
 			group.getChildren().add(controller.particleGroup);
