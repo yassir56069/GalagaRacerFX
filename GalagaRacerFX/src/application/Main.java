@@ -46,13 +46,12 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, scene, 10, 50.0, 0.05);
-			
+			ControlShip controller = new ControlShip(player, scene, 0, 50.0, 0.05);
+
 			LightHandler.addLightInstance(group, Color.WHITE, player.getCurrPosition());
-			
-			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE, player.getCurrPosition());
-			
-			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,-100));
+      
+			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE,  player.getCurrPosition() );
+			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,0));
 
 			group.getChildren().add(controller.particleGroup);
 			
