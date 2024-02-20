@@ -1,6 +1,7 @@
-![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/7b6dc094-312f-4186-8b1c-d5a079942ff1)# GalagaRacerFX
+# GalagaRacerFX
 
-![Game Screenshot](path/to/your/screenshot.png)
+![Game Screenshot](![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/797619bd-dc55-4bd4-87f0-c1307943cf5d)
+)
 
 ## Description
 GalagaRacerFX is a simple 3D space racing game inspired by retro Pseudo-Racers. This project was created as part of an Object-Oriented Programming (OOP) class. The game provides an exciting space racing experience with a nostalgic touch, allowing players to navigate through challenging lanes and immerse themselves in a visually engaging environment.
