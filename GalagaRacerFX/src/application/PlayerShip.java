@@ -1,6 +1,11 @@
 package application;
 
+import java.io.File;
+
 import javafx.geometry.Point3D;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
 
@@ -33,6 +38,7 @@ public class PlayerShip {
 	
 	
 	private GameCamera cameraReference;
+	private PhongMaterial material = new PhongMaterial();
 	
 	/**
 	 * Initializes player ship & it's position.
@@ -48,7 +54,12 @@ public class PlayerShip {
 		this.initPosition = playerPos;
 		this.currPosition = playerPos;
 		this.shipModel = model;
+
+		Image image = new Image(String.valueOf(new File("file:./src/application/spec.jpg")));
+//		material.setDiffuseMap(image);
+		material.setSelfIlluminationMap(image);
 		
+		this.shipModel.setMaterial(material);
 
 		bindCamera();
 	}

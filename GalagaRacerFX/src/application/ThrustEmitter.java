@@ -31,6 +31,8 @@ public class ThrustEmitter extends Emitter {
             		(Math.random() - 0.5) * -Velocity.getZ()
             		);
             		
+            
+            
             particles.add(particle);
             particleGroup.getChildren().add(particle.getSphere());
         }
