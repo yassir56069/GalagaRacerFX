@@ -1,5 +1,3 @@
-// TODO Create a parent class "Obstaces/Objects" that contains Lane & (in the future) Asteroids. 
-// 		Use this for collisions.
 
 package application;
 	
@@ -49,12 +47,12 @@ public class Main extends Application {
 			
 
 			ControlShip controller = new ControlShip(player, scene, 0, 50.0, 0.05);
-			
-			LightHandler.addLightInstance(group, Color.YELLOW, new Point3D(0,0,0));
-			
-			
+
+			LightHandler.addLightInstance(group, Color.WHITE, player.getCurrPosition());
+      
 			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE,  player.getCurrPosition() );
 			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,0));
+
 			group.getChildren().add(controller.particleGroup);
 			
 			
@@ -71,9 +69,6 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-
-
 	
 	public static void main(String[] args) {
 		launch(args);
