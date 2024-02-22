@@ -56,7 +56,7 @@ public class PlayerShip {
 		this.shipModel = model;
 
 		Image image = new Image(String.valueOf(new File("file:./src/application/spec.jpg")));
-//		material.setDiffuseMap(image);
+		material.setDiffuseColor(Color.GRAY);
 		material.setSelfIlluminationMap(image);
 		
 		this.shipModel.setMaterial(material);

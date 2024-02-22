@@ -50,7 +50,7 @@ public class Main extends Application {
 
 			ControlShip controller = new ControlShip(player, scene, 0, 50.0, 0.05);
 			
-			LightHandler.addLightInstance(group, Color.YELLOW, new Point3D(0,0,0));
+			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,0));
 			
 			
 			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE,  player.getCurrPosition() );
