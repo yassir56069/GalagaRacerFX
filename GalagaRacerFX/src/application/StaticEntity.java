@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.geometry.Point3D;
 import java.util.Random;
 import javafx.scene.Group;
+import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Shape3D;
@@ -25,7 +26,7 @@ public class StaticEntity {
     private int entityVelSize;
     
     
-	public StaticEntity(PhongMaterial material, double radius, int numOfEntities, PlayerShip playerReference, Point3D equParam, Point3D velParam) {
+	public StaticEntity(PhongMaterial material,double radius, int numOfEntities, PlayerShip playerReference, Point3D equParam, Point3D velParam) {
 		super();
 		this.material = material;
 		this.radius = radius;
@@ -56,8 +57,13 @@ public class StaticEntity {
 		addEntitiesToGroup();
 		
 	}
+
+	public ArrayList<Object> getEntityList(){
+		return entityVelList.get(0);
+		
+	}
 	
-	public Shape3D getEntityList(int index)
+	public Shape3D getIndexEntityList(int index)
 	{
 		return (Shape3D) entityVelList.get(0).get(index);
 	}
@@ -81,14 +87,14 @@ public class StaticEntity {
 	public void addEntitiesToGroup()
 	{
 		for (int entity = 0; entity < entityVelSize; entity++) {
-			entityGroup.getChildren().add(getEntityList(entity));
+			entityGroup.getChildren().add(getIndexEntityList(entity));
 		}
 	}
 	
 	
 	private void moveEntities(int index) {
 		
-		Shape3D currentEntity = getEntityList(index);
+		Shape3D currentEntity = getIndexEntityList(index);
 		
 		currentEntity.setTranslateX(currentEntity.getTranslateX() + velocity.getX());
 		currentEntity.setTranslateY(currentEntity.getTranslateY() + velocity.getX());
@@ -98,7 +104,7 @@ public class StaticEntity {
 	
 
 	public void placeEntity(int index) {
-		Shape3D currentEntity = getEntityList(index);
+		Shape3D currentEntity = getIndexEntityList(index);
 		
 		currentEntity.setTranslateX(currentEntity.getTranslateX() + ((random.nextDouble() - 0.5) * coordinateSpread.getX()));
 		currentEntity.setTranslateY(currentEntity.getTranslateY() + ((random.nextDouble() - 0.5) * coordinateSpread.getY()));
@@ -112,7 +118,7 @@ public class StaticEntity {
 		
 		for (int index = 0; index < entityVelSize; index++) {
 			moveEntities(index);
-			entDistance = playerReference.getCurrPosition().getZ() - getEntityList(index).getTranslateZ();
+			entDistance = playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ();
 			
 			if (entDistance > 300) {
 				placeEntity(index);

@@ -3,13 +3,19 @@
 
 package application;
 	
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 
 
@@ -44,14 +50,19 @@ public class Main extends Application {
 			// player
 			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
 			
+			
+			PhongMaterial asteroidMat = new PhongMaterial();
 
+			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
+			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
+			
 			// obstacles
 			StaticEntity obstacle = new StaticEntity(
-					new PhongMaterial(Color.WHITE),			//material
+					asteroidMat,							//material
 					10, 									//radius
-					30, 									//numOfEntities
+					10, 									//numOfEntities
 					player, 								//playerReference
-					new Point3D(200, 150, 20000),			//coordinateSpread
+					new Point3D(200, 150, 100000),			//coordinateSpread
 					new Point3D(0,0,0)						//velocitySpread
 					);
 			
@@ -59,14 +70,12 @@ public class Main extends Application {
 			StaticEntity star_particles = new StaticEntity(
 					new PhongMaterial(Color.WHITE),			//material
 					0.4, 									//radius
-					1000, 									//numOfEntities
+					700, 									//numOfEntities
 					player, 								//playerReference
 					new Point3D(500, 500, 100000),			//coordinateSpread
 					new Point3D(0,0,0)						//velocitySpread
 					);
 
-			
-			
 			group.getChildren().add(obstacle.getEntityGroup());
 			group.getChildren().add(star_particles.getEntityGroup());
 			
@@ -76,11 +85,11 @@ public class Main extends Application {
 
 			ControlShip controller = new ControlShip(player, scene, 0, 50.0, 0.05);
 			
-			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,0));
+			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
 			
 			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE,  player.getCurrPosition() );
-			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,0));
+			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,5000));
 			group.getChildren().add(controller.particleGroup);
 			
 			

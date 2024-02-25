@@ -24,7 +24,7 @@ public class ThrustEmitter extends Emitter {
             		new Point3D(coords.getX(), coords.getY(), coords.getZ()),
             		Color.rgb(247, randomGreen, 40),
             		BlendMode.ADD,
-            		80,
+            		50,
             		-0.2,
             		(Math.random() -0.5) * Velocity.getX(),
             		(Math.random() - 0.5) * Velocity.getY(),
