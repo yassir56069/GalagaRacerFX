@@ -11,29 +11,100 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 
+/**
+ * The {@code StaticEntity} class represents a container for entities statically placed within the game environment.
+ * These entities, represented by spheres, are organized in a 2D ArrayList named {@code entityVelList}. This list not only stores the entities
+ * themselves but also their respective velocities, facilitating controlled gliding movements across the screen.
+ * <p>
+ * Each entity is emitted randomly within a specified range, determined by the {@code coordinateSpread} property (X spread, Y spread, Z spread).
+ * The {@code velocity} property, represented by a {@code Point3D}, influences the range of velocities for each entity, adding variability to their motion.
+ * <p>
+ * The {@code material} property, of type {@code PhongMaterial}, is responsible for determining the appearance of the emitted models. This allows for a diverse
+ * and visually engaging array of entities within the game environment.
+ * <p>
+ * For simplicity, the current implementation uses spheres as the visual representation of the emitted models, and the {@code radius} property controls
+ * the size of these spheres.
+ * <p>
+ * The class employs a {@code Random} variable named 'random' to introduce a degree of randomness in the emission and motion of entities, contributing
+ * to a dynamic and unpredictable game environment.
+ * <p>
+ * The {@code playerReference} field holds a reference to the player's ship, of type {@code PlayerShip}, enabling interactions and coordination
+ * between the static entities and the player's ship.
+ * <p>
+ * <b>Usage Example:</b>
+ * <pre>{@code
+ * // Example instantiation of StaticEntity
+ * ArrayList<ArrayList<Sphere>> entityVelList = new ArrayList<>();
+ * PhongMaterial material = new PhongMaterial(Color.BLUE);
+ * Point3D coordinateSpread = new Point3D(100, 50, 200);
+ * Point3D velocity = new Point3D(0.5, 0, 0);
+ * double radius = 10.0;
+ * PlayerShip playerShip = new PlayerShip(); // Assuming a PlayerShip class exists
+ * StaticEntity staticEntity = new StaticEntity(entityVelList, material, coordinateSpread, velocity, radius, playerShip);
+ * }</pre>
+ * 
+ * <p><b>Fields:</b>
+ * <ul>
+ *   <li>{@code entityVelList}: 2D ArrayList containing entities (spheres) and their velocities.
+ *   Used for managing the position and movement of entities in the game environment.</li>
+ * 
+ *   <li>{@code material}: {@code PhongMaterial} determining the appearance of the emitted models.
+ *   Specifies the visual properties such as color, shininess, and texture.</li>
+ * 
+ *   <li>{@code coordinateSpread}: {@code Point3D} specifying the range for emitting entities (X, Y, Z).
+ *   Defines the area within which entities are randomly placed.</li>
+ * 
+ *   <li>{@code velocity}: {@code Point3D} specifying the range for velocities (X, Y, Z).
+ *   Influences the speed and direction of entities' gliding movements.</li>
+ * 
+ *   <li>{@code radius}: Radius of the sphere representing the emitted models.
+ *   Controls the size of the spheres used as the visual representation of entities.</li>
+ * 
+ *   <li>{@code random}: {@code Random} variable introducing randomness in emission and motion.
+ *   Used for generating random values for entity positions and velocities.</li>
+ * 
+ *   <li>{@code playerReference}: Reference to the player's ship, of type {@code PlayerShip}.
+ *   Enables interactions and coordination between static entities and the player's ship.</li>
+ * </ul>
+ * 
+ * @author Yassir Hossan Buksh
+ * @version 1.0
+ */
 public class StaticEntity {
 	private static final Random random = new Random();
-	private PhongMaterial material = new PhongMaterial(Color.GRAY);
-//	private ArrayList<Shape3D> entityList = new ArrayList<Shape3D>();
+	private PhongMaterial material = new PhongMaterial();
+
 	private Point3D coordinateSpread = new Point3D(0,0,0);
 	private Point3D velocity = new Point3D(0,0,0);
-	private double radius;
+	
 	private PlayerShip playerReference;
 	
-    public Group entityGroup = new Group();
+	
+	private double radius;
+
+    public 	Group entityGroup = new Group();
     
     ArrayList<ArrayList<Object>> entityVelList = new ArrayList<>();
     private int entityVelSize;
     
-    
-	public StaticEntity(PhongMaterial material,double radius, int numOfEntities, PlayerShip playerReference, Point3D equParam, Point3D velParam) {
+    /**
+     * Constructs a {@code StaticEntity} with the specified parameters.
+     *
+     * @param material      Material determining the appearance of the emitted models.
+     * @param radius        Radius of the sphere representing the emitted models.
+     * @param numOfEntities Number of entities to be created for this instance.
+     * @param playerReference Reference to the player's ship, of type {@code PlayerShip}.
+     * @param coordParam    Point3D specifying the range for emitting entities (X, Y, Z).
+     * @param velParam      Point3D specifying the range for velocities (X, Y, Z).
+     */
+	public StaticEntity(PhongMaterial material,double radius, int numOfEntities, PlayerShip playerReference, Point3D coordParam, Point3D velParam) {
 		super();
 		this.material = material;
 		this.radius = radius;
 		this.playerReference = playerReference;
 		this.entityVelSize = numOfEntities;
 		
-		coordinateSpread = equParam;
+		coordinateSpread = coordParam;
 		
 		
 	    

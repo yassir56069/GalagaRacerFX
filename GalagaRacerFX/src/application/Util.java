@@ -13,8 +13,8 @@ package application;
  * {@code Util.methodExample();}
  * </p>
  * 
+ * @author Yassir Hossan Buksh
  * @version 1.0
- * @since 2024-02-11
  */
 public final class Util {
 

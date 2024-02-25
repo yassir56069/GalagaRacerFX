@@ -60,7 +60,7 @@ public class Main extends Application {
 			StaticEntity obstacle = new StaticEntity(
 					asteroidMat,							//material
 					10, 									//radius
-					10, 									//numOfEntities
+					30, 									//numOfEntities
 					player, 								//playerReference
 					new Point3D(200, 150, 100000),			//coordinateSpread
 					new Point3D(0,0,0)						//velocitySpread
