@@ -45,11 +45,10 @@ public class Particle {
     	
     	
         material.setDiffuseColor(c);
-        material.setSpecularColor(Color.PURPLE);
         
         sphere = new Sphere(0.1);
 
-        
+       
         
         sphere.setMaterial(material);
         sphere.setBlendMode(blendMode);

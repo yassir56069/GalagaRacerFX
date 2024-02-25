@@ -36,7 +36,6 @@ public class PlayerShip {
 
 	private Shape3D shipModel;
 	
-	
 	private GameCamera cameraReference;
 	private PhongMaterial material = new PhongMaterial();
 	
@@ -54,10 +53,12 @@ public class PlayerShip {
 		this.initPosition = playerPos;
 		this.currPosition = playerPos;
 		this.shipModel = model;
+		
+
 
 		Image image = new Image(String.valueOf(new File("file:./src/application/spec.jpg")));
-//		material.setDiffuseMap(image);
-		material.setSelfIlluminationMap(image);
+		material.setDiffuseColor(Color.GRAY);
+//		material.setSelfIlluminationMap(image);
 		
 		this.shipModel.setMaterial(material);
 
@@ -173,7 +174,7 @@ public class PlayerShip {
 		}
 	}
 	
-	
+
     public boolean hasCollided(Lane lane)
     {
     	boolean hasCollided = false;

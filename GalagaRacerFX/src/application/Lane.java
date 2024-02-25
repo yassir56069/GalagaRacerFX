@@ -82,8 +82,26 @@ public class Lane {
 		
 		
 
-		Image image = new Image(String.valueOf(new File("file:./src/application/rock2_bump.jpg")));
-		material.setBumpMap(image);
+		Image bumpImage = new Image(String.valueOf(new File("file:./src/application/Assets/hexBump.png")));
+		Image specImage = new Image(String.valueOf(new File("file:./src/application/Assets/hexSpec.png")));
+		Image diffImage = new Image(String.valueOf(new File("file:./src/application/Assets/hexDiff.png")));
+//		Image dispImage = new Image(String.valueOf(new File("file:./src/application/Assets/hexIllum.png")));
+		
+		material.setBumpMap(bumpImage);
+		material.setSpecularMap(specImage);
+		material.setDiffuseMap(diffImage);
+//		material.setSelfIlluminationMap(dispImage);
+		
+		Image bumpImage_alt = new Image(String.valueOf(new File("file:./src/application/Assets/tileBump.png")));
+		Image specImage_alt = new Image(String.valueOf(new File("file:./src/application/Assets/tileSpec.png")));
+		Image diffImage_alt = new Image(String.valueOf(new File("file:./src/application/Assets/tileDiff.png")));
+//		Image dispImage_alt = new Image(String.valueOf(new File("file:./src/application/Assets/tileIllum.png")));
+		
+		material_alt.setBumpMap(bumpImage_alt);
+		material_alt.setSpecularMap(specImage_alt);
+		material_alt.setDiffuseMap(diffImage_alt);
+//		material_alt.setSelfIlluminationMap(dispImage_alt);
+		
 		
 		for (int i = 0; i < pillarRowSize * 2; i++ ) {
 			pillarsList.add(i, new Box(pillarDim.getX(), pillarDim.getY(), pillarDim.getZ()));
@@ -153,8 +171,6 @@ public class Lane {
 			leftTail = laneSize - 1;
 		}
 		
-		
-		
 	}
 
 	
@@ -166,7 +182,6 @@ public class Lane {
 	    for (Box node : pillarsList) {
 	    	group.getChildren().add(node);
 	      }
-		
 	}
 	
 
@@ -176,10 +191,6 @@ public class Lane {
 	
 	public ArrayList<Box> getPillarsList() {
 		return pillarsList;
-	}
-
-	public void setPillarsList(ArrayList<Box> pillarsList) {
-		this.pillarsList = pillarsList;
 	}
 
 	public int getLaneSize() {

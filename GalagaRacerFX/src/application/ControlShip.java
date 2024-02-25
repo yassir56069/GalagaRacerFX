@@ -78,7 +78,7 @@ public class ControlShip {
 
 	}
 
-    public void startGameLoop(Lane lane, PlayerShip player) {
+    public void startGameLoop(Lane lane, PlayerShip player, StaticEntity obstacle, StaticEntity stars) {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -86,7 +86,7 @@ public class ControlShip {
             
                 // Update game logic in each frame
             	updateParticles(); //particles
-            	e.emit(new Point3D(player.getCurrPosition().getX(),player.getCurrPosition().getY() + 5,(player.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 1.5), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
+            	e.emit(new Point3D(player.getCurrPosition().getX(),player.getCurrPosition().getY() + 5,(player.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
             	
             	//collision
             	if (player.hasCollided(lane))
@@ -97,13 +97,18 @@ public class ControlShip {
             	// movement
                 if (movingZ) {
                 	moveShip();
-                	
+    
                 }
                 else
                 {
                 	stopShip();
                 }
                 player.updateLanePillarsPosition(lane);
+                obstacle.updateEntitiesPosition();
+                
+            
+          
+                stars.updateEntitiesPosition();
             }
         };
         gameLoop.start();
