@@ -173,7 +173,7 @@ public class PlayerShip {
 		}
 	}
 	
-	
+
     public boolean hasCollided(Lane lane)
     {
     	boolean hasCollided = false;

@@ -78,7 +78,7 @@ public class ControlShip {
 
 	}
 
-    public void startGameLoop(Lane lane, PlayerShip player) {
+    public void startGameLoop(Lane lane, PlayerShip player, StaticEntity obstacle, StaticEntity stars) {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -97,13 +97,18 @@ public class ControlShip {
             	// movement
                 if (movingZ) {
                 	moveShip();
-                	
+    
                 }
                 else
                 {
                 	stopShip();
                 }
                 player.updateLanePillarsPosition(lane);
+                obstacle.updateEntitiesPosition();
+                
+            
+          
+                stars.updateEntitiesPosition();
             }
         };
         gameLoop.start();

@@ -49,7 +49,7 @@ public class Particle {
         
         sphere = new Sphere(0.1);
 
-        
+       
         
         sphere.setMaterial(material);
         sphere.setBlendMode(blendMode);

@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 
 
@@ -43,7 +44,32 @@ public class Main extends Application {
 			// player
 			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
 			
-		    
+
+			// obstacles
+			StaticEntity obstacle = new StaticEntity(
+					new PhongMaterial(Color.WHITE),			//material
+					10, 									//radius
+					30, 									//numOfEntities
+					player, 								//playerReference
+					new Point3D(200, 150, 20000),			//coordinateSpread
+					new Point3D(0,0,0)						//velocitySpread
+					);
+			
+			// star particle effect
+			StaticEntity star_particles = new StaticEntity(
+					new PhongMaterial(Color.WHITE),			//material
+					0.4, 									//radius
+					1000, 									//numOfEntities
+					player, 								//playerReference
+					new Point3D(500, 500, 100000),			//coordinateSpread
+					new Point3D(0,0,0)						//velocitySpread
+					);
+
+			
+			
+			group.getChildren().add(obstacle.getEntityGroup());
+			group.getChildren().add(star_particles.getEntityGroup());
+			
 			player.setCameraOffset(new Point3D(0, -20, -150));
 			group.getChildren().add(player.getShipModel());
 			
@@ -64,7 +90,7 @@ public class Main extends Application {
 			
 
 			LightHandler.getAllLightSources(primaryStage);
-			controller.startGameLoop(lane, player);
+			controller.startGameLoop(lane, player, obstacle, star_particles);
 	
 			
 		} catch(Exception e) {
