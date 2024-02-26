@@ -1,7 +1,7 @@
 # GalagaRacerFX
 
-![Game Logo](![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/54b238be-1c21-47d5-9012-9b765094eeba)
-)
+![Game Logo](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/54b238be-1c21-47d5-9012-9b765094eeba)
+
 
 
 ## Description
@@ -35,5 +35,5 @@ To play GalagaRacerFX, follow these steps:
 - Avoid obstacles and navigate through the lanes.
 
 ## Screenshots
-![Game Screenshot](![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/9dad897f-ecc4-4a01-8bb5-590e1bf4479f)
-)
+![Game Screenshot](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/9dad897f-ecc4-4a01-8bb5-590e1bf4479f)
+
