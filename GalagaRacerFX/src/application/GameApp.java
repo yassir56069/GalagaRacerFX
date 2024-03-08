@@ -3,6 +3,7 @@ package application;
 	
 import java.io.File;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -17,19 +18,25 @@ import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 
 
-public class Main extends Application {
+public class GameApp extends Application {
 	// General convention upheld without code; the FIRST HALF of the boxes are always the right ones.s
 	// Constants
 	public final int WIDTH 			= 1400;
 	public final int HEIGHT 		= 800;
 	
-
+	private Lane lane;
+	private Group group;
+	private Scene root_scene;
+	private GameCamera camera;
+	private PlayerShip player;
+	private PhongMaterial asteroidMat;
+	private StaticEntity obstacle;	
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Lane lane = new Lane(30, 90, new Point3D(20, 100, 100));
-
-			Group group = new Group();
+			lane = new Lane(30, 90, new Point3D(20, 100, 100));
+			group = new Group();
 			
 			LightHandler.setAmbientLight(group, Color.BLACK);
 			
@@ -37,25 +44,25 @@ public class Main extends Application {
 			
 			
 			// Scene
-			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
-			scene.setFill(Color.BLACK);
+			root_scene = new Scene(group, WIDTH, HEIGHT, true);
+			root_scene.setFill(Color.BLACK);
 			
 			//gameCamera
-			GameCamera c = new GameCamera(scene);
-			c.setCamera(0, 0, 0);
-			c.setNearFarClip(1, 4000);
+			camera = new GameCamera(root_scene);
+			camera.setCamera(0, 0, 0);
+			camera.setNearFarClip(1, 4000);
 			
 			// player
-			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
+			player = new PlayerShip(camera, new Point3D(0,0,140), new Sphere(10));
 			
 			
-			PhongMaterial asteroidMat = new PhongMaterial();
+			asteroidMat = new PhongMaterial();
 
 			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
 			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
 			
 			// obstacles
-			StaticEntity obstacle = new StaticEntity(
+			obstacle = new StaticEntity(
 					asteroidMat,							//material
 					10, 									//radius
 					30, 									//numOfEntities
@@ -65,7 +72,7 @@ public class Main extends Application {
 					);
 			
 			// star particle effect
-			StaticEntity star_particles = new StaticEntity(
+			star_particles = new StaticEntity(
 					new PhongMaterial(Color.WHITE),			//material
 					0.4, 									//radius
 					700, 									//numOfEntities
@@ -81,7 +88,7 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, scene, 0, 50.0, 0.05);
+//			GameController controller = new GameController(player, scene, 0, 50.0, 0.05);
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
@@ -89,22 +96,62 @@ public class Main extends Application {
 			LightInstance headlight = LightHandler.addLightInstance(group, Color.WHITE,  player.getCurrPosition() );
 			LightHandler.bindLightToObject(headlight, player.getShipModel(), new Point3D(0,0,5000));
 
-			group.getChildren().add(controller.particleGroup);
+//			group.getChildren().add(controller.particleGroup);
 			
 			
 			primaryStage.setTitle("GalaRacerFx");
-			primaryStage.setScene(scene);
+			primaryStage.setScene(root_scene);
 			primaryStage.show();
 			
 
 			LightHandler.getAllLightSources(primaryStage);
-			controller.startGameLoop(lane, player, obstacle, star_particles);
+//			controller.initGameLoop(lane, player, obstacle, star_particles);
 	
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public Lane getLane() {
+		return lane;
+	}
+
+	public Scene getRoot_scene() {
+		return root_scene;
+	}
+
+	public GameCamera getCamera() {
+		return camera;
+	}
+
+	public PlayerShip getPlayer() {
+		return player;
+	}
+
+	public PhongMaterial getAsteroidMat() {
+		return asteroidMat;
+	}
+
+	public StaticEntity getObstacle() {
+		return obstacle;
+	}
+
+	public StaticEntity getStar_particles() {
+		return star_particles;
+	}
+
+	private StaticEntity star_particles;
+	
 	
 	public static void main(String[] args) {
 		launch(args);

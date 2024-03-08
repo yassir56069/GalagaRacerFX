@@ -45,6 +45,9 @@ import javafx.scene.input.KeyCode;
  */
 public class ControlShip {
 
+	private GameState gameState = GameState.RUNNING;
+	private Group pauseScreen;
+	
 	private PlayerShip playerReference;
 	
 	private double minSpeed; // gliding speed
@@ -61,9 +64,10 @@ public class ControlShip {
     private Emitter e = new ThrustEmitter(particles, particleGroup);
 	
 	
-	public ControlShip(PlayerShip player, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
+	public ControlShip(PlayerShip player, Group pauseScreen, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
 	{
 		this.playerReference = player;
+		this.pauseScreen = pauseScreen;
 		this.movingZ = false;
 		this.movingL = false;
 		this.movingR = false;
@@ -72,7 +76,7 @@ public class ControlShip {
 		this.currSpeed = minSpeed;
 		this.shiftProp = shiftProp;
 		
-		// handle keyboard
+		// handle keyboard -- move to a seperate function at some point maybe!
         scene.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
         scene.setOnKeyReleased(event -> handleKeyRelease(event.getCode()));
 
@@ -82,38 +86,62 @@ public class ControlShip {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-            	double particleSpeed = currSpeed / 10;
-            
-                // Update game logic in each frame
-            	updateParticles(); //particles
-            	e.emit(new Point3D(player.getCurrPosition().getX(),player.getCurrPosition().getY() + 5,(player.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
             	
-            	//collision
-            	if (player.hasCollided(lane))
-            	{
-            		System.out.println("Collision Detected!");
+            	switch(gameState) {
+            	
+            	case RUNNING:
+                	
+                	double particleSpeed = currSpeed / 10;
+                
+                    // Update game logic in each frame
+                	updateParticles(); //particles
+                	e.emit(new Point3D(player.getCurrPosition().getX(),player.getCurrPosition().getY() + 5,(player.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
+                	
+                	//collision
+                	if (player.hasCollided(lane))
+                	{
+                		System.out.println("Collision Detected!");
+                	}
+                	
+                	// movement
+                    if (movingZ) {
+                    	moveShip();
+        
+                    }
+                    else
+                    {
+                    	stopShip();
+                    }
+                    player.updateLanePillarsPosition(lane);
+                    obstacle.updateEntitiesPosition();
+          
+                    stars.updateEntitiesPosition();
+                    break;
+                case PAUSED:
+                    // Additional actions when the game is paused
+                    break;
+                    
+                case GAMEOVER:
+                    // Additional actions when the game is over
+                    break;
+            	
             	}
             	
-            	// movement
-                if (movingZ) {
-                	moveShip();
-    
-                }
-                else
-                {
-                	stopShip();
-                }
-                player.updateLanePillarsPosition(lane);
-                obstacle.updateEntitiesPosition();
-                
-            
-          
-                stars.updateEntitiesPosition();
             }
         };
         gameLoop.start();
     }
-
+    
+    private void togglePause() {
+        if (gameState == GameState.RUNNING) {
+            gameState = GameState.PAUSED;
+            pauseScreen.setVisible(true); // Show pause screen
+        } else if (gameState == GameState.PAUSED) {
+            gameState = GameState.RUNNING;
+            pauseScreen.setVisible(false); // Hide pause screen
+        }
+        // Additional actions when the game state changes
+    }
     
     public void updateParticles() {
         Iterator<Particle> iterator = particles.iterator();
@@ -177,6 +205,8 @@ public class ControlShip {
             case D:
                 this.movingR = true;
                 break;
+            case ESCAPE:
+            	togglePause();
             default:
             	break;
         }

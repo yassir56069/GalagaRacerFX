@@ -1,8 +1,8 @@
 
 package application;
-	
 import java.io.File;
 
+import application.UI.Menus;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Shape3D;
@@ -20,9 +21,14 @@ import javafx.scene.shape.Sphere;
 public class Main extends Application {
 	// General convention upheld without code; the FIRST HALF of the boxes are always the right ones.s
 	// Constants
-	public final int WIDTH 			= 1400;
-	public final int HEIGHT 		= 800;
+	public static final int WIDTH 			= 1400;
+	public static final int HEIGHT 			= 800;
 	
+	// Game Pane
+	private BorderPane gamePane;
+	
+	// UI Elements
+	private Group pauseScreen;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -31,13 +37,21 @@ public class Main extends Application {
 
 			Group group = new Group();
 			
+			gamePane = new BorderPane();
+			
+			
+			
 			LightHandler.setAmbientLight(group, Color.BLACK);
 			
 			lane.addLaneToGroup(group);
 			
+			// GUI
+			this.pauseScreen = Menus.createPauseScreen();
+			
+			gamePane.getChildren().addAll(group, this.pauseScreen);
 			
 			// Scene
-			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
+			Scene scene = new Scene(gamePane, WIDTH, HEIGHT, true);
 			scene.setFill(Color.BLACK);
 			
 			//gameCamera
@@ -81,7 +95,7 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, scene, 0, 50.0, 0.05);
+			ControlShip controller = new ControlShip(player, pauseScreen, scene, 0, 50.0, 0.05);
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
@@ -92,14 +106,13 @@ public class Main extends Application {
 			group.getChildren().add(controller.particleGroup);
 			
 			
+
+//			LightHandler.getAllLightSources(primaryStage);
+			controller.startGameLoop(lane, player, obstacle, star_particles);
+			
 			primaryStage.setTitle("GalaRacerFx");
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
-
-			LightHandler.getAllLightSources(primaryStage);
-			controller.startGameLoop(lane, player, obstacle, star_particles);
-	
 			
 		} catch(Exception e) {
 			e.printStackTrace();
