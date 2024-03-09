@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import application.UI.PauseScreen;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point3D;
 import javafx.scene.Camera;
@@ -49,8 +50,6 @@ import javafx.scene.layout.BorderPane;
  */
 public class ControlShip {
 
-	private GameState gameState = GameState.RUNNING;
-	private BorderPane pauseScreen;
 	private Group gameGroup;
 	
 	private PlayerShip playerReference;
@@ -67,13 +66,15 @@ public class ControlShip {
     public Group particleGroup = new Group();
     
     private Emitter e = new ThrustEmitter(particles, particleGroup);
+
+
+    // Pause Screen Reference
+    PauseScreen pause;
 	
-	
-	
-	public ControlShip(PlayerShip player, Group gameGroup, BorderPane pauseScreen, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
+	public ControlShip(PlayerShip player, Group gameGroup, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
 	{
+		this.pause = pause;
 		this.playerReference = player;
-		this.pauseScreen = pauseScreen;
 		this.gameGroup = gameGroup;
 	
 		this.movingZ = false;
@@ -95,7 +96,7 @@ public class ControlShip {
             @Override
             public void handle(long now) {
             	
-            	switch(gameState) {
+            	switch(Main.gameState) {
             	
             	case RUNNING:
                 	
@@ -122,7 +123,7 @@ public class ControlShip {
                     }
                     playerReference.updateLanePillarsPosition(lane);
 //                    playerReference.bindUIToPlayer(pauseScreen, UI_Offset);
-                    c.bindToCamera(pauseScreen, UI_Offset);
+                    c.bindToCamera(pause.screen, UI_Offset);
                     obstacle.updateEntitiesPosition();
           
                     stars.updateEntitiesPosition();
@@ -141,46 +142,7 @@ public class ControlShip {
         };
         gameLoop.start();
     }
-    
-    private void toggleNodesVisibility(boolean isPauseScreenDisplayed) {
-        double pauseScreenZ = pauseScreen.getTranslateZ() + 50;
 
-        for (Node node : gameGroup.getChildren()) {
-            if (node != pauseScreen ) { // Skip the pause screen itself
-                double nodeZ = node.getTranslateZ();
-
-                // Assuming the Z-axis decreases towards the camera
-                 
-                if (isPauseScreenDisplayed)
-                {
-                    if (nodeZ > pauseScreenZ) {
-                        node.setVisible(true);
-                    } else {
-                        node.setVisible(false);
-                    }
-                }
-                else
-                {
-                	node.setVisible(true);
-                }
-            }
-        }
-    }
-    
-    private void togglePause() {
-        if (gameState == GameState.RUNNING) {
-            gameState = GameState.PAUSED;
-            pauseScreen.setVisible(true); // Show pause screen
-            toggleNodesVisibility(true);
-            System.out.println("Pause Screen Bounds: " + pauseScreen.getBoundsInParent());
-        } else if (gameState == GameState.PAUSED) {
-            gameState = GameState.RUNNING;
-            pauseScreen.setVisible(false); // Hide pause screen
-            toggleNodesVisibility(false);
-        }
-        // Additional actions when the game state changesb
-    }
-    
     public void updateParticles() {
         Iterator<Particle> iterator = particles.iterator();
         while (iterator.hasNext()) {
@@ -195,7 +157,6 @@ public class ControlShip {
         }
     }
 	
-    
 	private void moveShip()
 	{	if (movingZ)
 		{
@@ -231,6 +192,7 @@ public class ControlShip {
 		}
 		if ( (int) currSpeed == minSpeed) currSpeed = minSpeed;
 	}
+	
       
     private void handleKeyPress(KeyCode code) {
         switch (code) {
@@ -244,7 +206,7 @@ public class ControlShip {
                 this.movingR = true;
                 break;
             case ESCAPE:
-            	togglePause();
+            	pause.togglePause();
             default:
             	break;
         }

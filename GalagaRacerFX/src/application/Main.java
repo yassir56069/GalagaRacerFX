@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 
 import application.UI.Menus;
+import application.UI.PauseScreen;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -31,18 +32,18 @@ public class Main extends Application {
 	public static final int WIDTH 			= 1400;
 	public static final int HEIGHT 			= 800;
 	
-	// Game Pane
-	private BorderPane gamePane;
-	
-	// UI Elements
-	private BorderPane pauseScreen;
+	public static GameState gameState = GameState.RUNNING;
 
+	
+
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			Lane lane = new Lane(30, 90, new Point3D(20, 100, 100));
 
 			Group group = new Group();
+			
 			
 			LightHandler.setAmbientLight(group, Color.BLACK);
 			
@@ -55,58 +56,24 @@ public class Main extends Application {
 			
 			
 			// GUI
-			System.setProperty("prism.lcdtext", "false");
+			PauseScreen pause = new PauseScreen(group);
 			
-			Label paused_text = new Label("PAUSED");
-			paused_text.setFont(Font.font("Arial", 60));
-
-			paused_text.setSnapToPixel(true); // Enable snap to pixel
-			paused_text.setCache(true);
+			pause.screen = Menus.createPauseScreen(pause);
 			
-			paused_text.setStyle("-fx-font-smoothing-type: gray;");
-			
-
-	        paused_text.translateXProperty().add(-100);
-	        
-	        StackPane pauseContent = new StackPane(paused_text);
-	        
-	        pauseContent.setStyle("-fx-background-color: rgba(255, 255, 255, 1);"); // Semi-transparent background
-	        
-	        
-
-	        
-	        // Create the SubScene for the pause screen
-	        pauseScreen = new BorderPane(pauseContent);
-	        
-	
-	        Point3D camerapos = c.getInitialCameraPosition();
-	        
-	        System.out.println(camerapos);
-
-	        pauseScreen.setPrefWidth(WIDTH);
-	        pauseScreen.setPrefHeight(HEIGHT);
-
-	        pauseScreen.setTranslateX(- WIDTH);
-	        pauseScreen.setTranslateY(- HEIGHT);
-	        pauseScreen.setTranslateZ( camerapos.getZ());
-	        
-	        
-	        pauseScreen.setVisible(false);
-
-			group.getChildren().addAll(pauseScreen);
+			group.getChildren().addAll(pause.screen);
 	        
 			
-			// Scene+
+			// Scene
 		
 			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
 			scene.setFill(Color.BLACK);
 			scene.setCamera(c.camera);
 			
 	        
-	        pauseScreen.setLayoutX(scene.getWidth() - pauseScreen.getWidth() / 2);
-	        pauseScreen.setLayoutY(scene.getHeight() - pauseScreen.getHeight() / 2);
+	        pause.screen.setLayoutX(scene.getWidth() - pause.screen.getWidth() / 2);
+	        pause.screen.setLayoutY(scene.getHeight() - pause.screen.getHeight() / 2);
 			
-			
+	        
 			// player
 			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
 			
@@ -145,7 +112,7 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, pauseScreen, scene, 0, 50.0, 0.05);
+			ControlShip controller = new ControlShip(player, group, pause, scene, 0, 50.0, 0.05);
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
@@ -166,13 +133,13 @@ public class Main extends Application {
 			primaryStage.show();
 			
 			
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
