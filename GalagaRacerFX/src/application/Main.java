@@ -7,15 +7,22 @@ import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
 import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
+import javafx.scene.SubScene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
+import javafx.scene.text.Font;
 
 
 public class Main extends Application {
@@ -28,7 +35,7 @@ public class Main extends Application {
 	private BorderPane gamePane;
 	
 	// UI Elements
-	private Group pauseScreen;
+	private BorderPane pauseScreen;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -37,30 +44,72 @@ public class Main extends Application {
 
 			Group group = new Group();
 			
-			gamePane = new BorderPane();
-			
-			
-			
 			LightHandler.setAmbientLight(group, Color.BLACK);
 			
 			lane.addLaneToGroup(group);
 			
-			// GUI
-			this.pauseScreen = Menus.createPauseScreen();
-			
-			gamePane.getChildren().addAll(group, this.pauseScreen);
-			
-			// Scene
-			Scene scene = new Scene(gamePane, WIDTH, HEIGHT, true);
-			scene.setFill(Color.BLACK);
-			
 			//gameCamera
-			GameCamera c = new GameCamera(scene);
-			c.setCamera(0, 0, 0);
+			GameCamera c = new GameCamera();
+			c.setCamera(0, 0, -10);
 			c.setNearFarClip(1, 4000);
+			
+			
+			// GUI
+			System.setProperty("prism.lcdtext", "false");
+			
+			Label paused_text = new Label("PAUSED");
+			paused_text.setFont(Font.font("Arial", 60));
+
+			paused_text.setSnapToPixel(true); // Enable snap to pixel
+			paused_text.setCache(true);
+			
+			paused_text.setStyle("-fx-font-smoothing-type: gray;");
+			
+
+	        paused_text.translateXProperty().add(-100);
+	        
+	        StackPane pauseContent = new StackPane(paused_text);
+	        
+	        pauseContent.setStyle("-fx-background-color: rgba(255, 255, 255, 1);"); // Semi-transparent background
+	        
+	        
+
+	        
+	        // Create the SubScene for the pause screen
+	        pauseScreen = new BorderPane(pauseContent);
+	        
+	
+	        Point3D camerapos = c.getInitialCameraPosition();
+	        
+	        System.out.println(camerapos);
+
+	        pauseScreen.setPrefWidth(WIDTH);
+	        pauseScreen.setPrefHeight(HEIGHT);
+
+	        pauseScreen.setTranslateX(- WIDTH);
+	        pauseScreen.setTranslateY(- HEIGHT);
+	        pauseScreen.setTranslateZ( camerapos.getZ());
+	        
+	        
+	        pauseScreen.setVisible(false);
+
+			group.getChildren().addAll(pauseScreen);
+	        
+			
+			// Scene+
+		
+			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
+			scene.setFill(Color.BLACK);
+			scene.setCamera(c.camera);
+			
+	        
+	        pauseScreen.setLayoutX(scene.getWidth() - pauseScreen.getWidth() / 2);
+	        pauseScreen.setLayoutY(scene.getHeight() - pauseScreen.getHeight() / 2);
+			
 			
 			// player
 			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
+			
 			
 			
 			PhongMaterial asteroidMat = new PhongMaterial();
@@ -92,10 +141,11 @@ public class Main extends Application {
 			group.getChildren().add(star_particles.getEntityGroup());
 			
 			player.setCameraOffset(new Point3D(0, -20, -150));
+			
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, pauseScreen, scene, 0, 50.0, 0.05);
+			ControlShip controller = new ControlShip(player, group, pauseScreen, scene, 0, 50.0, 0.05);
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
@@ -105,19 +155,23 @@ public class Main extends Application {
 
 			group.getChildren().add(controller.particleGroup);
 			
-			
+			// UI Offset
+			Point3D UI_Offset = new Point3D(-WIDTH * 1.5, -HEIGHT * 1.5, 1000);
 
 //			LightHandler.getAllLightSources(primaryStage);
-			controller.startGameLoop(lane, player, obstacle, star_particles);
+			controller.startGameLoop(lane, UI_Offset, c, obstacle, star_particles);
 			
 			primaryStage.setTitle("GalaRacerFx");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 	public static void main(String[] args) {
 		launch(args);
