@@ -6,9 +6,13 @@ import java.util.List;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point3D;
+import javafx.scene.Camera;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 
 
 /**
@@ -46,7 +50,8 @@ import javafx.scene.input.KeyCode;
 public class ControlShip {
 
 	private GameState gameState = GameState.RUNNING;
-	private Group pauseScreen;
+	private BorderPane pauseScreen;
+	private Group gameGroup;
 	
 	private PlayerShip playerReference;
 	
@@ -64,10 +69,13 @@ public class ControlShip {
     private Emitter e = new ThrustEmitter(particles, particleGroup);
 	
 	
-	public ControlShip(PlayerShip player, Group pauseScreen, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
+	
+	public ControlShip(PlayerShip player, Group gameGroup, BorderPane pauseScreen, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
 	{
 		this.playerReference = player;
 		this.pauseScreen = pauseScreen;
+		this.gameGroup = gameGroup;
+	
 		this.movingZ = false;
 		this.movingL = false;
 		this.movingR = false;
@@ -82,7 +90,7 @@ public class ControlShip {
 
 	}
 
-    public void startGameLoop(Lane lane, PlayerShip player, StaticEntity obstacle, StaticEntity stars) {
+    public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -92,13 +100,13 @@ public class ControlShip {
             	case RUNNING:
                 	
                 	double particleSpeed = currSpeed / 10;
-                
+                	
                     // Update game logic in each frame
                 	updateParticles(); //particles
-                	e.emit(new Point3D(player.getCurrPosition().getX(),player.getCurrPosition().getY() + 5,(player.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
+                	e.emit(new Point3D(playerReference.getCurrPosition().getX(),playerReference.getCurrPosition().getY() + 5,(playerReference.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
                 	
                 	//collision
-                	if (player.hasCollided(lane))
+                	if (playerReference.hasCollided(lane))
                 	{
                 		System.out.println("Collision Detected!");
                 	}
@@ -112,7 +120,9 @@ public class ControlShip {
                     {
                     	stopShip();
                     }
-                    player.updateLanePillarsPosition(lane);
+                    playerReference.updateLanePillarsPosition(lane);
+//                    playerReference.bindUIToPlayer(pauseScreen, UI_Offset);
+                    c.bindToCamera(pauseScreen, UI_Offset);
                     obstacle.updateEntitiesPosition();
           
                     stars.updateEntitiesPosition();
@@ -132,15 +142,43 @@ public class ControlShip {
         gameLoop.start();
     }
     
+    private void toggleNodesVisibility(boolean isPauseScreenDisplayed) {
+        double pauseScreenZ = pauseScreen.getTranslateZ() + 50;
+
+        for (Node node : gameGroup.getChildren()) {
+            if (node != pauseScreen ) { // Skip the pause screen itself
+                double nodeZ = node.getTranslateZ();
+
+                // Assuming the Z-axis decreases towards the camera
+                 
+                if (isPauseScreenDisplayed)
+                {
+                    if (nodeZ > pauseScreenZ) {
+                        node.setVisible(true);
+                    } else {
+                        node.setVisible(false);
+                    }
+                }
+                else
+                {
+                	node.setVisible(true);
+                }
+            }
+        }
+    }
+    
     private void togglePause() {
         if (gameState == GameState.RUNNING) {
             gameState = GameState.PAUSED;
             pauseScreen.setVisible(true); // Show pause screen
+            toggleNodesVisibility(true);
+            System.out.println("Pause Screen Bounds: " + pauseScreen.getBoundsInParent());
         } else if (gameState == GameState.PAUSED) {
             gameState = GameState.RUNNING;
             pauseScreen.setVisible(false); // Hide pause screen
+            toggleNodesVisibility(false);
         }
-        // Additional actions when the game state changes
+        // Additional actions when the game state changesb
     }
     
     public void updateParticles() {
