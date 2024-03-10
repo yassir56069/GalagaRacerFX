@@ -1,10 +1,14 @@
 package application.UI;
 
+import java.util.ArrayList;
+
 import application.GameState;
 import application.Main;
+import application.PlayerShip;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Box;
 
 public class PauseScreen {
 	
@@ -12,15 +16,18 @@ public class PauseScreen {
 	public Boolean isDisplayed = false;
 	
 	// references
-	
+	private PlayerShip player;
 	private Group gameGroup;
+	private ArrayList<Box> pillars;
 	
 	
-	public PauseScreen(Group gameGroup) {
+	public PauseScreen(Group gameGroup, PlayerShip player, ArrayList<Box> pillars) {
 		this.screen = new BorderPane();
 		this.isDisplayed = false;
 		
 		this.gameGroup = gameGroup;
+		this.player = player;
+		this.pillars = pillars;
 		
 	}
 
@@ -50,28 +57,31 @@ public class PauseScreen {
     }
     
     private void toggleNodesVisibility(Group gameGroup) {	
-        double pauseScreenZ = screen.getTranslateZ() + 50;
+        double pauseScreenZ = screen.getTranslateZ() - 200;
 
-        for (Node node : gameGroup.getChildren()) {
-            if (node != screen ) { // Skip the pause screen itself
-                double nodeZ = node.getTranslateZ();
-
-                // Assuming the Z-axis decreases towards the camera
-                 
-                if (isDisplayed)
-                {
-                    if (nodeZ > pauseScreenZ) {
-                        node.setVisible(true);
-                    } else {
-                        node.setVisible(false);
-                    }
-                }
-                else
-                {
-                	node.setVisible(true);
-                }
-            }
+        for (int i = 0; i < gameGroup.getChildren().size(); i++) {
+        	Node currentNode = gameGroup.getChildren().get(i);
+        	
+        	// we dont want to display the player when the pause screen is shown
+        	
+        	if ( (pillars.contains(currentNode) ||currentNode == player.getShipModel()) && currentNode != screen )
+        	{
+        		  double nodeZ = currentNode.getTranslateZ();
+	              if (isDisplayed)
+	              {
+	                  if (nodeZ > pauseScreenZ) {
+	                	  currentNode.setVisible(false);
+	                  } else {
+	                	  currentNode.setVisible(true);
+	                  }
+	              }
+	              else
+	              {
+	            	  currentNode.setVisible(true);
+	              }
+	        	}
         }
+        
     }
 }
 
