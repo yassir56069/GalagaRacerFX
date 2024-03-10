@@ -8,12 +8,52 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class Menus {
+
+	public static HUD createHUD(HUD hud)
+	{
+
+        VBox vbox = new VBox(hud.score_label);
+        
+        vbox.setTranslateY(20);
+        vbox.setTranslateX(20);
+        vbox.setSpacing(100); // Set spacing between nodes
+        
+        vbox.setStyle("-fx-background-radius: 0 0 10 0;");
+        vbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(0, 0, 10, 0, false), Insets.EMPTY)));
+        
+        
+        StackPane pauseContent = new StackPane(vbox);
+        
+        pauseContent.setStyle("-fx-background-color: rgba(0, 255, 255, 0.4); -fx-background-radius: 10 0 10 10;"); // Semi-transparent background
+
+        
+        BorderPane p = new BorderPane(pauseContent);
+//        
+//        p.setTranslateX((-Main.WIDTH * 0.5) + 30);
+//        p.setTranslateY(- Main.HEIGHT * 0.5);
+//        
+//        p.setTranslateZ(1250);
+        
+        p.setPrefWidth(200);
+        p.setPrefHeight(80);
+
+        hud.screen = p;
+        
+        return hud;
+	}
 	
+
 	public static BorderPane createPauseScreen(PauseScreen p)
 	{
 		
@@ -76,4 +116,5 @@ public class Menus {
         return container;
 	}
 	
+
 }

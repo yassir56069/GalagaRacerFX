@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import application.UI.HUD;
 import application.UI.PauseScreen;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point3D;
@@ -68,12 +69,15 @@ public class ControlShip {
     private Emitter e = new ThrustEmitter(particles, particleGroup);
 
 
-    // Pause Screen Reference
+    // Interface References
     PauseScreen pause;
+    HUD hud;
+    
 	
-	public ControlShip(PlayerShip player, Group gameGroup, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
+	public ControlShip(PlayerShip player, Group gameGroup, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
 	{
 		this.pause = pause;
+		this.hud = hud;
 		this.playerReference = player;
 		this.gameGroup = gameGroup;
 	
@@ -122,11 +126,18 @@ public class ControlShip {
                     	stopShip();
                     }
                     playerReference.updateLanePillarsPosition(lane);
-//                    playerReference.bindUIToPlayer(pauseScreen, UI_Offset);
+                                        
                     c.bindToCamera(pause.screen, UI_Offset);
+                    c.bindToCamera(hud.screen, hud.pos);
+                    
                     obstacle.updateEntitiesPosition();
-          
+                    
                     stars.updateEntitiesPosition();
+                    
+                    //score
+                    hud.setScore(Math.abs( (int) playerReference.getCurrPosition().getZ() / 1000));
+                    
+                    
                     break;
                 case PAUSED:
                     // Additional actions when the game is paused
@@ -161,6 +172,7 @@ public class ControlShip {
 	{	if (movingZ)
 		{
 			playerReference.MovePlayerZ(currSpeed);
+			
 		}
 		
 		if (movingL)

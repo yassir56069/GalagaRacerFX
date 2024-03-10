@@ -2,6 +2,7 @@
 package application;
 import java.io.File;
 
+import application.UI.HUD;
 import application.UI.Menus;
 import application.UI.PauseScreen;
 import javafx.application.Application;
@@ -34,7 +35,6 @@ public class Main extends Application {
 	
 	public static GameState gameState = GameState.RUNNING;
 
-	
 
 	
 	@Override
@@ -56,11 +56,17 @@ public class Main extends Application {
 			
 			
 			// GUI
+			
+			
+			HUD hud = new HUD(new Point3D(((-Main.WIDTH * 0.5) + 100), (- Main.HEIGHT * 0.5) + 65, 1250));
+			
+			
 			PauseScreen pause = new PauseScreen(group);
 			
+			hud = Menus.createHUD(hud);
 			pause.screen = Menus.createPauseScreen(pause);
 			
-			group.getChildren().addAll(pause.screen);
+			group.getChildren().addAll(pause.screen, hud.screen);
 	        
 			
 			// Scene
@@ -112,7 +118,7 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, pause, scene, 0, 50.0, 0.05);
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 50.0, 0.05);
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
