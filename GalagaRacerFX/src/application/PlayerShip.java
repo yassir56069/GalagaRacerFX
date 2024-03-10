@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 
 import javafx.geometry.Point3D;
+import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -63,6 +64,15 @@ public class PlayerShip {
 		this.shipModel.setMaterial(material);
 
 		bindCamera();
+	}
+	
+	public void bindUIToPlayer(SubScene s, Point3D offset) {
+		
+		
+		
+		s.translateXProperty().bind(this.shipModel.translateXProperty().add(offset.getX()));
+		s.translateYProperty().bind(this.shipModel.translateYProperty().add(offset.getY()));
+		s.translateZProperty().bind(this.shipModel.translateZProperty().add(offset.getZ()));
 	}
 	
 	private void bindCamera() {

@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import application.UI.HUD;
+import application.UI.PauseScreen;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point3D;
+import javafx.scene.Camera;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 
 
 /**
@@ -45,6 +51,8 @@ import javafx.scene.input.KeyCode;
  */
 public class ControlShip {
 
+	private Group gameGroup;
+	
 	private PlayerShip playerReference;
 	
 	private double minSpeed; // gliding speed
@@ -59,11 +67,20 @@ public class ControlShip {
     public Group particleGroup = new Group();
     
     private Emitter e = new ThrustEmitter(particles, particleGroup);
+
+
+    // Interface References
+    PauseScreen pause;
+    HUD hud;
+    
 	
-	
-	public ControlShip(PlayerShip player, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
+	public ControlShip(PlayerShip player, Group gameGroup, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
 	{
+		this.pause = pause;
+		this.hud = hud;
 		this.playerReference = player;
+		this.gameGroup = gameGroup;
+	
 		this.movingZ = false;
 		this.movingL = false;
 		this.movingR = false;
@@ -72,49 +89,71 @@ public class ControlShip {
 		this.currSpeed = minSpeed;
 		this.shiftProp = shiftProp;
 		
-		// handle keyboard
+		// handle keyboard -- move to a seperate function at some point maybe!
         scene.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
         scene.setOnKeyReleased(event -> handleKeyRelease(event.getCode()));
 
 	}
 
-    public void startGameLoop(Lane lane, PlayerShip player, StaticEntity obstacle, StaticEntity stars) {
+    public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-            	double particleSpeed = currSpeed / 10;
-            
-                // Update game logic in each frame
-            	updateParticles(); //particles
-            	e.emit(new Point3D(player.getCurrPosition().getX(),player.getCurrPosition().getY() + 5,(player.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
             	
-            	//collision
-            	if (player.hasCollided(lane))
-            	{
-            		System.out.println("Collision Detected!");
+            	switch(Main.gameState) {
+            	
+            	case RUNNING:
+                	
+                	double particleSpeed = currSpeed / 10;
+                	
+                    // Update game logic in each frame
+                	updateParticles(); //particles
+                	e.emit(new Point3D(playerReference.getCurrPosition().getX(),playerReference.getCurrPosition().getY() + 5,(playerReference.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
+                	
+                	//collision
+                	if (playerReference.hasCollided(lane))
+                	{
+                		System.out.println("Collision Detected!");
+                	}
+                	
+                	// movement
+                    if (movingZ) {
+                    	moveShip();
+        
+                    }
+                    else
+                    {
+                    	stopShip();
+                    }
+                    playerReference.updateLanePillarsPosition(lane);
+                                        
+                    c.bindToCamera(pause.screen, UI_Offset);
+                    c.bindToCamera(hud.screen, hud.pos);
+                    
+                    obstacle.updateEntitiesPosition();
+                    
+                    stars.updateEntitiesPosition();
+                    
+                    //score
+                    hud.setScore(Math.abs( (int) playerReference.getCurrPosition().getZ() / 1000));
+                    
+                    
+                    break;
+                case PAUSED:
+                    // Additional actions when the game is paused
+                    break;
+                    
+                case GAMEOVER:
+                    // Additional actions when the game is over
+                    break;
+            	
             	}
             	
-            	// movement
-                if (movingZ) {
-                	moveShip();
-    
-                }
-                else
-                {
-                	stopShip();
-                }
-                player.updateLanePillarsPosition(lane);
-                obstacle.updateEntitiesPosition();
-                
-            
-          
-                stars.updateEntitiesPosition();
             }
         };
         gameLoop.start();
     }
 
-    
     public void updateParticles() {
         Iterator<Particle> iterator = particles.iterator();
         while (iterator.hasNext()) {
@@ -129,11 +168,11 @@ public class ControlShip {
         }
     }
 	
-    
 	private void moveShip()
 	{	if (movingZ)
 		{
 			playerReference.MovePlayerZ(currSpeed);
+			
 		}
 		
 		if (movingL)
@@ -165,6 +204,7 @@ public class ControlShip {
 		}
 		if ( (int) currSpeed == minSpeed) currSpeed = minSpeed;
 	}
+	
       
     private void handleKeyPress(KeyCode code) {
         switch (code) {
@@ -177,6 +217,8 @@ public class ControlShip {
             case D:
                 this.movingR = true;
                 break;
+            case ESCAPE:
+            	pause.togglePause();
             default:
             	break;
         }

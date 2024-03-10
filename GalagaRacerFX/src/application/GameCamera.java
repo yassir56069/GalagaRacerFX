@@ -4,6 +4,8 @@ import javafx.geometry.Point3D;
 import javafx.scene.Camera;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
+import javafx.scene.layout.BorderPane;
 
 /**
  * The {@code GameCamera} class encapsulates a JavaFX camera object and a {@link javafx.geometry.Point3D}.
@@ -49,12 +51,10 @@ public class GameCamera {
 	 * 
 	 * @param Scene s : the scene to render on the camera.
 	 */
-	public GameCamera(Scene s)
+	public GameCamera()
 	{
 		this.camera = new PerspectiveCamera(true);
-		
-		
-		s.setCamera(camera);
+
 	}
 	
 	/**
@@ -88,6 +88,13 @@ public class GameCamera {
 	}
 	
 
+	public void bindToCamera(BorderPane pauseScreen, Point3D offset) {
+			pauseScreen.translateXProperty().bind(camera.translateXProperty().add(offset.getX()));
+			pauseScreen.translateYProperty().bind(camera.translateYProperty().add(offset.getY()));
+			pauseScreen.translateZProperty().bind(camera.translateZProperty().add(offset.getZ()));
+	}
+	
+	
 	/**setNearFarClip
 	 * 
 	 * sets the near far clip for the camera, leave to 0 if unchanged
