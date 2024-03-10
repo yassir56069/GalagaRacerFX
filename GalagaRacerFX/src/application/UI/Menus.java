@@ -39,11 +39,7 @@ public class Menus {
 
         
         BorderPane p = new BorderPane(pauseContent);
-//        
-//        p.setTranslateX((-Main.WIDTH * 0.5) + 30);
-//        p.setTranslateY(- Main.HEIGHT * 0.5);
-//        
-//        p.setTranslateZ(1250);
+
         
         p.setPrefWidth(200);
         p.setPrefHeight(80);
@@ -60,10 +56,13 @@ public class Menus {
 		Label paused_text = new Label("PAUSED");
 		
 		Button rg = new Button("Resume Game");
-		
+
+		rg.setMinSize(100, 24);  // Set your minimum width and height
+		rg.setPrefSize(100, 24);
+        
 		StackPane resume_game = createButton(rg);
 		
-		paused_text.setFont(Font.font("Arial", 60));
+		paused_text.setFont(Font.font("Arial", 30));
 
 		paused_text.setSnapToPixel(true); // Enable snap to pixel
 		paused_text.setCache(true);
@@ -75,20 +74,16 @@ public class Menus {
         
         StackPane pauseContent = new StackPane(paused_text, resume_game);
         
-        pauseContent.setStyle("-fx-background-color: rgba(255, 255, 255, 1);"); // Semi-transparent background
+        pauseContent.setStyle("-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 20 20 20 20;"); 
         
         
         p.screen = new BorderPane(pauseContent);
         
+        p.screen.setPrefSize(190, 190);
+        p.screen.setMaxSize(190, 180);
         
-        
-        p.screen.setPrefWidth(Main.WIDTH);
-        p.screen.setPrefHeight(Main.HEIGHT);
 
-        p.screen.setTranslateX(- Main.WIDTH);
-        p.screen.setTranslateY(- Main.HEIGHT);
-        
-        moveButton(resume_game, rg, 160, 110);
+        moveButton(resume_game, rg, 0, 100);
         
         rg.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -109,9 +104,7 @@ public class Menus {
 	private static StackPane createButton(Button b) {
         // Create a StackPane and add the button to it
         StackPane container = new StackPane(b);
-
-        // Set initial position (optional)
-        StackPane.setMargin(b, new javafx.geometry.Insets(50, 50, 50, 50));
+ 
         
         return container;
 	}

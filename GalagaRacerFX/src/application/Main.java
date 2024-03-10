@@ -50,18 +50,20 @@ public class Main extends Application {
 			lane.addLaneToGroup(group);
 			
 			//gameCamera
+			
 			GameCamera c = new GameCamera();
 			c.setCamera(0, 0, -10);
 			c.setNearFarClip(1, 4000);
 			
 			
-			// GUI
+			// player
+			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
 			
+			// GUI
 			
 			HUD hud = new HUD(new Point3D(((-Main.WIDTH * 0.5) + 100), (- Main.HEIGHT * 0.5) + 65, 1250));
 			
-			
-			PauseScreen pause = new PauseScreen(group);
+			PauseScreen pause = new PauseScreen(group, player, lane.getPillarsList());
 			
 			hud = Menus.createHUD(hud);
 			pause.screen = Menus.createPauseScreen(pause);
@@ -74,16 +76,10 @@ public class Main extends Application {
 			Scene scene = new Scene(group, WIDTH, HEIGHT, true);
 			scene.setFill(Color.BLACK);
 			scene.setCamera(c.camera);
-			
 	        
 	        pause.screen.setLayoutX(scene.getWidth() - pause.screen.getWidth() / 2);
 	        pause.screen.setLayoutY(scene.getHeight() - pause.screen.getHeight() / 2);
-			
-	        
-			// player
-			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
-			
-			
+
 			
 			PhongMaterial asteroidMat = new PhongMaterial();
 
@@ -129,7 +125,7 @@ public class Main extends Application {
 			group.getChildren().add(controller.particleGroup);
 			
 			// UI Offset
-			Point3D UI_Offset = new Point3D(-WIDTH * 1.5, -HEIGHT * 1.5, 1000);
+			Point3D UI_Offset = new Point3D((-WIDTH * 1.5) + 605, (-HEIGHT * 1.5) + 280, 500);
 
 //			LightHandler.getAllLightSources(primaryStage);
 			controller.startGameLoop(lane, UI_Offset, c, obstacle, star_particles);
