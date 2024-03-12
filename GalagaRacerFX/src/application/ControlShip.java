@@ -130,7 +130,7 @@ public class ControlShip {
                     c.bindToCamera(pause.screen, UI_Offset);
                     c.bindToCamera(hud.screen, hud.pos);
                     
-                    obstacle.updateEntitiesPosition();
+                    obstacle.updateEntitiesPositionObstacle();
                     
                     stars.updateEntitiesPosition();
                     

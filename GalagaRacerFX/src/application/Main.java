@@ -92,8 +92,8 @@ public class Main extends Application {
 					10, 									//radius
 					30, 									//numOfEntities
 					player, 								//playerReference
-					new Point3D(200, 150, 100000),			//coordinateSpread
-					new Point3D(0,0,0)						//velocitySpread
+					new Point3D(200, 150, 10000),			//coordinateSpread
+					new Point3D(3,3,2)						//velocitySpread
 					);
 			
 			// star particle effect

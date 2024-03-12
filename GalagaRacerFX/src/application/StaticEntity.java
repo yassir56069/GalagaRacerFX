@@ -75,7 +75,7 @@ public class StaticEntity {
 	private PhongMaterial material = new PhongMaterial();
 
 	private Point3D coordinateSpread = new Point3D(0,0,0);
-	private Point3D velocity = new Point3D(0,0,0);
+	private Point3D velocitySpread;
 	
 	private PlayerShip playerReference;
 	
@@ -105,8 +105,7 @@ public class StaticEntity {
 		this.entityVelSize = numOfEntities;
 		
 		coordinateSpread = coordParam;
-		
-		
+		this.velocitySpread = velParam;
 	    
 	    ArrayList<Object> entityList = new ArrayList<>();
 	    ArrayList<Object> velocityList = new ArrayList<>();
@@ -119,7 +118,9 @@ public class StaticEntity {
 			currentSphere.setMaterial(material);
 			
 			entityList.add(currentSphere);
+			velocityList.add(generateVelSpread());
 			
+			System.out.println(velocityList);
 			placeEntity(entity);
 		}
 		
@@ -144,14 +145,20 @@ public class StaticEntity {
 		entityVelList.get(0).add(shape);
 	}
 	
+	
 	public Point3D accessVelList(int index)
 	{
 		return (Point3D) entityVelList.get(1).get(index);
 	}
 	
-	public void setVelList(Point3D velocity)
+	public void addVelList(Point3D velocity)
 	{
 		entityVelList.get(1).add(velocity);
+	}
+	
+	public void setVelList(int index, Point3D velocity)
+	{
+		entityVelList.get(1).set(index, velocity);
 	}
 	
 	
@@ -166,10 +173,11 @@ public class StaticEntity {
 	private void moveEntities(int index) {
 		
 		Shape3D currentEntity = getIndexEntityList(index);
+		Point3D velocity = accessVelList(index);
 		
 		currentEntity.setTranslateX(currentEntity.getTranslateX() + velocity.getX());
-		currentEntity.setTranslateY(currentEntity.getTranslateY() + velocity.getX());
-		currentEntity.setTranslateZ(currentEntity.getTranslateZ() + velocity.getX());
+		currentEntity.setTranslateY(currentEntity.getTranslateY() + velocity.getY());
+		currentEntity.setTranslateZ(currentEntity.getTranslateZ() - velocity.getZ());
 	}
 	
 	
@@ -177,32 +185,56 @@ public class StaticEntity {
 	public void placeEntity(int index) {
 		Shape3D currentEntity = getIndexEntityList(index);
 		
-		currentEntity.setTranslateX(currentEntity.getTranslateX() + ((random.nextDouble() - 0.5) * coordinateSpread.getX()));
-		currentEntity.setTranslateY(currentEntity.getTranslateY() + ((random.nextDouble() - 0.5) * coordinateSpread.getY()));
-		currentEntity.setTranslateZ(currentEntity.getTranslateZ() + Math.abs(playerReference.getCurrPosition().getZ() + random.nextDouble() * coordinateSpread.getZ()));
+		currentEntity.setTranslateX(((random.nextDouble() - 0.5) * coordinateSpread.getX()));
+		currentEntity.setTranslateY(((random.nextDouble() - 0.5) * coordinateSpread.getY()));
+		currentEntity.setTranslateZ(Math.abs(playerReference.getCurrPosition().getZ() + (random.nextDouble() * coordinateSpread.getZ()) + 1000));
 	}
 	
 	public void updateEntitiesPosition()
 	{
-		double entDistance; 
+		Point3D entDistance; 
 		
-		
-		for (int index = 0; index < entityVelSize; index++) {
-			moveEntities(index);
-			entDistance = playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ();
 			
-			if (entDistance > 300) {
+		for (int index = 0; index < entityVelSize; index++) {
+			entDistance = new Point3D( playerReference.getCurrPosition().getX() - getIndexEntityList(index).getTranslateX(), playerReference.getCurrPosition().getY() - getIndexEntityList(index).getTranslateY(),playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ());
+
+			if (entDistance.getX() > 130) {
 				placeEntity(index);
+				setVelList(index, generateVelSpread());
+			}
+			
+			if (entDistance.getY() > 130) {
+				placeEntity(index);
+				setVelList(index, generateVelSpread());
+			}
+			
+			if (entDistance.getZ() > 300) {
+				placeEntity(index);
+				setVelList(index, generateVelSpread());
 			}
 		}
 		
 		
 	}
 	
-	public void setVelocity(Point3D velocity) {
-		this.velocity = velocity;
+	public void updateEntitiesPositionObstacle()
+	{
+		double entDistance; 
+		
+			
+		for (int index = 0; index < entityVelSize; index++) {
+			moveEntities(index);
+			entDistance = playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ();
+			
+			if (entDistance > 300) {
+				placeEntity(index);
+				
+			}
+		}
+		
+		
 	}
-
+	
 	public void changeSpread(Point3D rndValues) {
 		this.coordinateSpread = rndValues;
 	}
@@ -211,4 +243,9 @@ public class StaticEntity {
 		return entityGroup;
 	}
 
+	private Point3D generateVelSpread() {
+		System.out.println(velocitySpread);
+		return new Point3D(((random.nextDouble() - 0.5) * velocitySpread.getX()), (random.nextDouble() - 0.5) * velocitySpread.getY(), Math.abs(random.nextDouble() * velocitySpread.getZ()));
+	}
+	
 }
