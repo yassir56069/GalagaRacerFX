@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 
 import javafx.geometry.Point3D;
+import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -198,6 +199,19 @@ public class PlayerShip {
 		return hasCollided;
     }
     
+    
+    public boolean hasCollidedObstacle(StaticEntity se)
+    {
+    	boolean hasCollided = false;
+    	for (Object i:se.getEntityList()) {
+    		if (((Node) i).getBoundsInParent().intersects(this.shipModel.getBoundsInParent())) {
+    			hasCollided = true;
+    			break;
+    		}
+    	}
+    	
+		return hasCollided;
+    }
 	
 	
 	/**

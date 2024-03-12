@@ -120,7 +120,6 @@ public class StaticEntity {
 			entityList.add(currentSphere);
 			velocityList.add(generateVelSpread());
 			
-			System.out.println(velocityList);
 			placeEntity(entity);
 		}
 		
@@ -244,7 +243,6 @@ public class StaticEntity {
 	}
 
 	private Point3D generateVelSpread() {
-		System.out.println(velocitySpread);
 		return new Point3D(((random.nextDouble() - 0.5) * velocitySpread.getX()), (random.nextDouble() - 0.5) * velocitySpread.getY(), Math.abs(random.nextDouble() * velocitySpread.getZ()));
 	}
 	

@@ -89,11 +89,11 @@ public class Main extends Application {
 			// obstacles
 			StaticEntity obstacle = new StaticEntity(
 					asteroidMat,							//material
-					10, 									//radius
+					20, 									//radius
 					30, 									//numOfEntities
 					player, 								//playerReference
-					new Point3D(200, 150, 10000),			//coordinateSpread
-					new Point3D(3,3,2)						//velocitySpread
+					new Point3D(150, 100, 10000),			//coordinateSpread
+					new Point3D(3,3,1)						//velocitySpread
 					);
 			
 			// star particle effect
