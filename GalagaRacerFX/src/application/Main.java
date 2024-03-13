@@ -28,6 +28,7 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Rotate;
 
 
 public class Main extends Application {
@@ -70,8 +71,19 @@ public class Main extends Application {
 			c.setNearFarClip(1, 4000);
 			
 			
+
+			Group model = loadModel("file:./src/application/Assets/models/spaceship1.obj");
+			
+			model.setScaleX(10.0);
+			model.setScaleY(10.0);
+			model.setScaleZ(20.0);
+
+			model.setTranslateX(0);
+//			model.setTranslateY(-10);
+			model.setTranslateZ(50);
+			
 			// player
-			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
+			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), model);
 			
 			// GUI
 			
@@ -104,9 +116,9 @@ public class Main extends Application {
 			StaticEntity obstacle = new StaticEntity(
 					asteroidMat,							//material
 					20, 									//radius
-					300, 									//numOfEntities
+					30, 									//numOfEntities
 					player, 								//playerReference
-					new Point3D(150, 100, 100000),			//coordinateSpread
+					new Point3D(100, 100, 20000),			//coordinateSpread
 					new Point3D(3,3,1)						//velocitySpread
 					);
 			
@@ -128,7 +140,7 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, -10, 50.0, 0.05);
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 50.0, 0.05);
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
@@ -141,18 +153,8 @@ public class Main extends Application {
 			// UI Offset
 			Point3D UI_Offset = new Point3D((-WIDTH * 1.5) + 605, (-HEIGHT * 1.5) + 280, 500);
 
-			Group model = loadModel("file:./src/application/Assets/models/Scooter-smgrps.obj");
 			
-			model.setScaleX(10.0);
-			model.setScaleY(10.0);
-			model.setScaleZ(10.0);
-
-			
-			model.setTranslateX(0);
-			model.setTranslateY(0);
-			model.setTranslateZ(200);
-			
-			group.getChildren().add(model);
+//			group.getChildren().add(model);
 			
 //			LightHandler.getAllLightSources(primaryStage);
 			controller.startGameLoop(lane, UI_Offset, c, obstacle, star_particles);

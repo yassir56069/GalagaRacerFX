@@ -122,9 +122,7 @@ public class StaticEntity {
 			
 			placeEntity(entity);
 		}
-		
 
-		
 		addEntitiesToGroup();
 		
 	}

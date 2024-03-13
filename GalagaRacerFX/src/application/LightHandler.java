@@ -27,10 +27,10 @@ public class LightHandler {
 		return newInstance;
 	}
 
-	public static void bindLightToObject(LightInstance light, Shape3D object, Point3D offset) {
-		light.getLight().translateXProperty().bind(object.translateXProperty().add(offset.getX()));
-		light.getLight().translateYProperty().bind(object.translateYProperty().add(offset.getY()));
-		light.getLight().translateZProperty().bind(object.translateZProperty().add(offset.getZ()));
+	public static void bindLightToObject(LightInstance light, Group group, Point3D offset) {
+		light.getLight().translateXProperty().bind(group.translateXProperty().add(offset.getX()));
+		light.getLight().translateYProperty().bind(group.translateYProperty().add(offset.getY()));
+		light.getLight().translateZProperty().bind(group.translateZProperty().add(offset.getZ()));
 	}
 	
 	public static void getAllLightSources(Stage s) {
