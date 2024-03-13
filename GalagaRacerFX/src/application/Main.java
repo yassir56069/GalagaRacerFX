@@ -2,6 +2,8 @@
 package application;
 import java.io.File;
 
+import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
+
 import application.UI.HUD;
 import application.UI.Menus;
 import application.UI.PauseScreen;
@@ -22,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
@@ -35,7 +38,18 @@ public class Main extends Application {
 	
 	public static GameState gameState = GameState.RUNNING;
 
+    public static Group loadModel(String modelPath) {
+        ObjModelImporter importer = new ObjModelImporter();
+        importer.read(modelPath);
 
+        Group modelRoot = new Group();
+
+        for (MeshView meshView : importer.getImport()) {
+            modelRoot.getChildren().add(meshView);
+        }
+
+        return modelRoot;
+    }
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -90,9 +104,9 @@ public class Main extends Application {
 			StaticEntity obstacle = new StaticEntity(
 					asteroidMat,							//material
 					20, 									//radius
-					30, 									//numOfEntities
+					300, 									//numOfEntities
 					player, 								//playerReference
-					new Point3D(150, 100, 10000),			//coordinateSpread
+					new Point3D(150, 100, 100000),			//coordinateSpread
 					new Point3D(3,3,1)						//velocitySpread
 					);
 			
@@ -114,7 +128,7 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 50.0, 0.05);
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, -10, 50.0, 0.05);
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
@@ -127,6 +141,19 @@ public class Main extends Application {
 			// UI Offset
 			Point3D UI_Offset = new Point3D((-WIDTH * 1.5) + 605, (-HEIGHT * 1.5) + 280, 500);
 
+			Group model = loadModel("file:./src/application/Assets/models/Scooter-smgrps.obj");
+			
+			model.setScaleX(10.0);
+			model.setScaleY(10.0);
+			model.setScaleZ(10.0);
+
+			
+			model.setTranslateX(0);
+			model.setTranslateY(0);
+			model.setTranslateZ(200);
+			
+			group.getChildren().add(model);
+			
 //			LightHandler.getAllLightSources(primaryStage);
 			controller.startGameLoop(lane, UI_Offset, c, obstacle, star_particles);
 			
