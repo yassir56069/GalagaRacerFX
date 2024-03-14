@@ -95,7 +95,11 @@ public class ControlShip {
 
 	}
 
-    public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
+    public double getCurrSpeed() {
+		return currSpeed;
+	}
+
+	public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -115,6 +119,8 @@ public class ControlShip {
                 	{
                 		System.out.println("Collision Detected!");
                 	}
+                	
+                	playerReference.rotationLogicX();
                 	
                 	// movement
                     if (movingZ) {
@@ -169,7 +175,9 @@ public class ControlShip {
     }
 	
 	private void moveShip()
-	{	if (movingZ)
+	{	
+		
+		if (movingZ)
 		{
 			playerReference.MovePlayerZ(currSpeed);
 			
@@ -213,9 +221,11 @@ public class ControlShip {
                 break;
             case A:
                 this.movingL = true;
+                this.playerReference.setRotateLeft(true);
                 break;
             case D:
                 this.movingR = true;
+                this.playerReference.setRotateRight(true);
                 break;
             case ESCAPE:
             	pause.togglePause();
@@ -231,9 +241,11 @@ public class ControlShip {
             break;
         case A:
             this.movingL = false;
+            this.playerReference.setRotateLeft(false);
             break;
         case D:
             this.movingR = false;
+            this.playerReference.setRotateRight(false);
             break;
         default:
         	break;

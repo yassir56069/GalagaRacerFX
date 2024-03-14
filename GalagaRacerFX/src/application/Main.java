@@ -39,18 +39,6 @@ public class Main extends Application {
 	
 	public static GameState gameState = GameState.RUNNING;
 
-    public static Group loadModel(String modelPath) {
-        ObjModelImporter importer = new ObjModelImporter();
-        importer.read(modelPath);
-
-        Group modelRoot = new Group();
-
-        for (MeshView meshView : importer.getImport()) {
-            modelRoot.getChildren().add(meshView);
-        }
-
-        return modelRoot;
-    }
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -72,10 +60,10 @@ public class Main extends Application {
 			
 			
 
-			Group model = loadModel("file:./src/application/Assets/models/spaceship1.obj");
+			Group model = ModelLoader.loadModel("file:./src/application/Assets/models/spaceship1.obj");
 			
 			model.setScaleX(10.0);
-			model.setScaleY(10.0);
+			model.setScaleY(15.0);
 			model.setScaleZ(20.0);
 
 			model.setTranslateX(0);
@@ -112,14 +100,22 @@ public class Main extends Application {
 			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
 			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
 			
+			
+			player.setCameraOffset(new Point3D(0, -20, -150));
+			
+			group.getChildren().add(player.getShipModel());
+			
+
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
+			
 			// obstacles
 			StaticEntity obstacle = new StaticEntity(
 					asteroidMat,							//material
 					20, 									//radius
 					30, 									//numOfEntities
 					player, 								//playerReference
-					new Point3D(100, 100, 20000),			//coordinateSpread
-					new Point3D(3,3,1)						//velocitySpread
+					new Point3D(100, 50, 100000),			//coordinateSpread
+					new Point3D(3,3,1 + (controller.getCurrSpeed() / 100))						//velocitySpread
 					);
 			
 			// star particle effect
@@ -135,12 +131,6 @@ public class Main extends Application {
 			group.getChildren().add(obstacle.getEntityGroup());
 			group.getChildren().add(star_particles.getEntityGroup());
 			
-			player.setCameraOffset(new Point3D(0, -20, -150));
-			
-			group.getChildren().add(player.getShipModel());
-			
-
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 50.0, 0.05);
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			

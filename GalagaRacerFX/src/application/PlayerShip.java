@@ -39,6 +39,9 @@ import javafx.util.Duration;
 public class PlayerShip {
 
 	private RotateTransition tiltAnimation;
+	
+	private boolean rotateLeft = false;
+	private boolean rotateRight = false;
 
 	private Point3D initPosition;
 	private Point3D currPosition;
@@ -181,28 +184,49 @@ public class PlayerShip {
 	
 	public void MovePlayerLeftRight(double speed)
 	{
-		double rotation = 30;
-		
+//	    if (rotateLeft) {
+//	        rotateShip(-30);
+//	    } else if (rotateRight) {
+//	        rotateShip(30);
+//	    } else {
+//	        rotateShip(0);
+//	    }
 		this.shipModel.setTranslateX(this.shipModel.getTranslateX() + speed);
 		
 		this.currPosition = new Point3D(this.currPosition.getX() + speed, this.currPosition.getY(), this.currPosition.getZ());
 
 	    // Create a new Rotate transformation for X-axis
 		
-		if (speed > 0) rotation = -rotation;
-		
-		
-	    Rotate rotationX = new Rotate(speed * 0.8, Rotate.Z_AXIS);
 
-	    // Apply the new Rotate transformation
-	    this.shipModel.getTransforms().add(rotationX);
+		
+//	    Rotate rotationX = new Rotate(speed * 0.8, Rotate.Z_AXIS);
+//
+//	    // Apply the new Rotate transformation
+//	    this.shipModel.getTransforms().add(rotationX);
 	    
 		
 		bindCamera();
 	
 	}
 	
+	public void rotationLogicX()
+	{
+	    if (rotateLeft) {
+	        rotateShip(-30);
+	    } else if (rotateRight) {
+	        rotateShip(30);
+	    } else {
+	        rotateShip(0);
+	    }
+	}
 	
+	private void rotateShip(double angle) {
+	    RotateTransition rotateTransition = new RotateTransition(Duration.millis(100), shipModel);
+	    rotateTransition.setToAngle(angle);
+	    rotateTransition.play();
+	}
+
+		
 	public void updateLanePillarsPosition(Lane laneReference)
 	{
 		double tailDistance = this.calculateDistanceToTail(laneReference.getLeftTail().getTranslateZ());
@@ -264,4 +288,14 @@ public class PlayerShip {
 	public Point3D getCurrPosition() {
 		return currPosition;
 	}
+	
+
+	public void setRotateLeft(boolean value) {
+	    rotateLeft = value;
+	}
+	
+	public void setRotateRight(boolean value) {
+	    rotateRight = value;
+	}
+	
 }

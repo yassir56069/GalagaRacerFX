@@ -73,6 +73,7 @@ import javafx.scene.shape.Sphere;
 public class StaticEntity {
 	private static final Random random = new Random();
 	private PhongMaterial material = new PhongMaterial();
+	private Group seModel;
 
 	private Point3D coordinateSpread = new Point3D(0,0,0);
 	private Point3D velocitySpread;
@@ -80,7 +81,6 @@ public class StaticEntity {
 	private PlayerShip playerReference;
 	
 	
-	private double radius;
 
     public 	Group entityGroup = new Group();
     
@@ -100,7 +100,6 @@ public class StaticEntity {
 	public StaticEntity(PhongMaterial material,double radius, int numOfEntities, PlayerShip playerReference, Point3D coordParam, Point3D velParam) {
 		super();
 		this.material = material;
-		this.radius = radius;
 		this.playerReference = playerReference;
 		this.entityVelSize = numOfEntities;
 		
@@ -127,6 +126,7 @@ public class StaticEntity {
 		
 	}
 
+	
 	public ArrayList<Object> getEntityList(){
 		return entityVelList.get(0);
 		
@@ -136,7 +136,7 @@ public class StaticEntity {
 	{
 		return (Shape3D) entityVelList.get(0).get(index);
 	}
-	
+
 	public void setEntityList(Shape3D shape)
 	{
 		entityVelList.get(0).add(shape);
@@ -184,7 +184,7 @@ public class StaticEntity {
 		
 		currentEntity.setTranslateX(((random.nextDouble() - 0.5) * coordinateSpread.getX()));
 		currentEntity.setTranslateY(((random.nextDouble() - 0.5) * coordinateSpread.getY()));
-		currentEntity.setTranslateZ(Math.abs(playerReference.getCurrPosition().getZ() + (random.nextDouble() * coordinateSpread.getZ()) + 3000));
+		currentEntity.setTranslateZ(Math.abs(playerReference.getCurrPosition().getZ() + (random.nextDouble() * coordinateSpread.getZ()) + 1000));
 	}
 	
 	public void updateEntitiesPosition()
@@ -195,16 +195,6 @@ public class StaticEntity {
 		for (int index = 0; index < entityVelSize; index++) {
 			entDistance = new Point3D( playerReference.getCurrPosition().getX() - getIndexEntityList(index).getTranslateX(), playerReference.getCurrPosition().getY() - getIndexEntityList(index).getTranslateY(),playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ());
 
-			if (entDistance.getX() > 130) {
-				placeEntity(index);
-				setVelList(index, generateVelSpread());
-			}
-			
-			if (entDistance.getY() > 130) {
-				placeEntity(index);
-				setVelList(index, generateVelSpread());
-			}
-			
 			if (entDistance.getZ() > 300) {
 				placeEntity(index);
 				setVelList(index, generateVelSpread());
@@ -216,16 +206,26 @@ public class StaticEntity {
 	
 	public void updateEntitiesPositionObstacle()
 	{
-		double entDistance; 
+		Point3D entDistance; 
 		
 			
 		for (int index = 0; index < entityVelSize; index++) {
 			moveEntities(index);
-			entDistance = playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ();
-			
-			if (entDistance > 300) {
+			entDistance = new Point3D( playerReference.getCurrPosition().getX() - getIndexEntityList(index).getTranslateX(), playerReference.getCurrPosition().getY() - getIndexEntityList(index).getTranslateY(),playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ());
+
+			if (entDistance.getX() > 100) {
 				placeEntity(index);
-				
+				setVelList(index, generateVelSpread());
+			}
+			
+			if (entDistance.getY() > 100) {
+				placeEntity(index);
+				setVelList(index, generateVelSpread());
+			}
+			
+			if (entDistance.getZ() > 300) {
+				placeEntity(index);
+				setVelList(index, generateVelSpread());
 			}
 		}
 		
@@ -241,7 +241,7 @@ public class StaticEntity {
 	}
 
 	private Point3D generateVelSpread() {
-		return new Point3D(((random.nextDouble() - 0.5) * velocitySpread.getX()), (random.nextDouble() - 0.5) * velocitySpread.getY(), Math.abs(random.nextDouble() * velocitySpread.getZ()));
+		return new Point3D(((random.nextDouble() - 0.5) * velocitySpread.getX()), (random.nextDouble() - 0.5) * velocitySpread.getY(), (random.nextDouble() - 0.5) * velocitySpread.getZ());
 	}
 	
 }
