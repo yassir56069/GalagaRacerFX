@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.geometry.Point3D;
 import java.util.Random;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -71,76 +72,80 @@ import javafx.scene.shape.Sphere;
  * @version 1.0
  */
 public class StaticEntity {
-	private static final Random random = new Random();
-	private PhongMaterial material = new PhongMaterial();
-	private Group seModel;
-
-	private Point3D coordinateSpread = new Point3D(0,0,0);
-	private Point3D velocitySpread;
+	protected static final Random random = new Random();
 	
-	private PlayerShip playerReference;
+	
+	protected Point3D coordinateSpread = new Point3D(0,0,0);
+	protected Point3D velocitySpread;
+	
+	protected PlayerShip playerReference;
 	
 	
 
     public 	Group entityGroup = new Group();
     
-    ArrayList<ArrayList<Object>> entityVelList = new ArrayList<>();
-    private int entityVelSize;
+    protected ArrayList<ArrayList<Object>> entityVelList = new ArrayList<>();
     
-    /**
-     * Constructs a {@code StaticEntity} with the specified parameters.
-     *
-     * @param material      Material determining the appearance of the emitted models.
-     * @param radius        Radius of the sphere representing the emitted models.
-     * @param numOfEntities Number of entities to be created for this instance.
-     * @param playerReference Reference to the player's ship, of type {@code PlayerShip}.
-     * @param coordParam    Point3D specifying the range for emitting entities (X, Y, Z).
-     * @param velParam      Point3D specifying the range for velocities (X, Y, Z).
-     */
-	public StaticEntity(PhongMaterial material,double radius, int numOfEntities, PlayerShip playerReference, Point3D coordParam, Point3D velParam) {
-		super();
-		this.material = material;
+    
+    
+    protected int entityVelSize;
+    
+    //constructor
+
+	public StaticEntity(PlayerShip playerReference, int numOfEntities, Point3D coordParam, Point3D velParam) {
+		
 		this.playerReference = playerReference;
 		this.entityVelSize = numOfEntities;
 		
-		coordinateSpread = coordParam;
+		this.coordinateSpread = coordParam;
 		this.velocitySpread = velParam;
-	    
-	    ArrayList<Object> entityList = new ArrayList<>();
-	    ArrayList<Object> velocityList = new ArrayList<>();
-	    
-	    entityVelList.add(entityList);
-	    entityVelList.add(velocityList);
-		
-		for (int entity = 0; entity < numOfEntities; entity++) {
-			Sphere currentSphere = new Sphere(radius);
-			currentSphere.setMaterial(material);
-			
-			entityList.add(currentSphere);
-			velocityList.add(generateVelSpread());
-			
-			placeEntity(entity);
-		}
 
-		addEntitiesToGroup();
+	}
+    
+    
+    //private methods
+	
+	protected Node getIndexEntityList(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	protected void moveEntities(int index) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	
+	protected void placeEntity(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
+	// protected methods
+
+	protected Point3D generateVelSpread() {
+		return new Point3D(((random.nextDouble() - 0.5) * velocitySpread.getX()), (random.nextDouble() - 0.5) * velocitySpread.getY(), (random.nextDouble() - 0.5) * velocitySpread.getZ());
+	}
+	
+
+	protected void setEntityList(Node shape) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	// public methods
+
+
+
 	public ArrayList<Object> getEntityList(){
 		return entityVelList.get(0);
 		
 	}
-	
-	public Shape3D getIndexEntityList(int index)
-	{
-		return (Shape3D) entityVelList.get(0).get(index);
-	}
 
-	public void setEntityList(Shape3D shape)
-	{
-		entityVelList.get(0).add(shape);
-	}
 	
 	
 	public Point3D accessVelList(int index)
@@ -166,45 +171,9 @@ public class StaticEntity {
 		}
 	}
 	
-	
-	private void moveEntities(int index) {
-		
-		Shape3D currentEntity = getIndexEntityList(index);
-		Point3D velocity = accessVelList(index);
-		
-		currentEntity.setTranslateX(currentEntity.getTranslateX() + velocity.getX());
-		currentEntity.setTranslateY(currentEntity.getTranslateY() + velocity.getY());
-		currentEntity.setTranslateZ(currentEntity.getTranslateZ() - velocity.getZ());
-	}
-	
-	
 
-	public void placeEntity(int index) {
-		Shape3D currentEntity = getIndexEntityList(index);
-		
-		currentEntity.setTranslateX(((random.nextDouble() - 0.5) * coordinateSpread.getX()));
-		currentEntity.setTranslateY(((random.nextDouble() - 0.5) * coordinateSpread.getY()));
-		currentEntity.setTranslateZ(Math.abs(playerReference.getCurrPosition().getZ() + (random.nextDouble() * coordinateSpread.getZ()) + 1000));
-	}
 	
 	public void updateEntitiesPosition()
-	{
-		Point3D entDistance; 
-		
-			
-		for (int index = 0; index < entityVelSize; index++) {
-			entDistance = new Point3D( playerReference.getCurrPosition().getX() - getIndexEntityList(index).getTranslateX(), playerReference.getCurrPosition().getY() - getIndexEntityList(index).getTranslateY(),playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ());
-
-			if (entDistance.getZ() > 300) {
-				placeEntity(index);
-				setVelList(index, generateVelSpread());
-			}
-		}
-		
-		
-	}
-	
-	public void updateEntitiesPositionObstacle()
 	{
 		Point3D entDistance; 
 		
@@ -213,16 +182,6 @@ public class StaticEntity {
 			moveEntities(index);
 			entDistance = new Point3D( playerReference.getCurrPosition().getX() - getIndexEntityList(index).getTranslateX(), playerReference.getCurrPosition().getY() - getIndexEntityList(index).getTranslateY(),playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ());
 
-			if (entDistance.getX() > 100) {
-				placeEntity(index);
-				setVelList(index, generateVelSpread());
-			}
-			
-			if (entDistance.getY() > 100) {
-				placeEntity(index);
-				setVelList(index, generateVelSpread());
-			}
-			
 			if (entDistance.getZ() > 300) {
 				placeEntity(index);
 				setVelList(index, generateVelSpread());
@@ -231,7 +190,10 @@ public class StaticEntity {
 		
 		
 	}
-	
+
+
+
+
 	public void changeSpread(Point3D rndValues) {
 		this.coordinateSpread = rndValues;
 	}
@@ -240,8 +202,5 @@ public class StaticEntity {
 		return entityGroup;
 	}
 
-	private Point3D generateVelSpread() {
-		return new Point3D(((random.nextDouble() - 0.5) * velocitySpread.getX()), (random.nextDouble() - 0.5) * velocitySpread.getY(), (random.nextDouble() - 0.5) * velocitySpread.getZ());
-	}
 	
 }

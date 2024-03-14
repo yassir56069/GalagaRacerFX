@@ -109,23 +109,23 @@ public class Main extends Application {
 			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
 			
 			// obstacles
-			StaticEntity obstacle = new StaticEntity(
-					asteroidMat,							//material
-					20, 									//radius
-					30, 									//numOfEntities
-					player, 								//playerReference
-					new Point3D(100, 50, 100000),			//coordinateSpread
-					new Point3D(3,3,1 + (controller.getCurrSpeed() / 100))						//velocitySpread
+			StaticEntity obstacle = new MovingParticles(
+					asteroidMat,												//material
+					20, 														//radius
+					100, 														//numOfEntities
+					player, 													//playerReference
+					new Point3D(100, 50, 100000),								//coordinateSpread
+					new Point3D(3,3,1 + (controller.getCurrSpeed() / 100))		//velocitySpread
 					);
 			
 			// star particle effect
-			StaticEntity star_particles = new StaticEntity(
-					new PhongMaterial(Color.WHITE),			//material
-					0.4, 									//radius
-					700, 									//numOfEntities
-					player, 								//playerReference
-					new Point3D(500, 500, 100000),			//coordinateSpread
-					new Point3D(0,0,0)						//velocitySpread
+			StaticEntity star_particles = new MovingParticles(
+					new PhongMaterial(Color.WHITE),								//material
+					0.4, 														//radius
+					700, 														//numOfEntities
+					player, 													//playerReference
+					new Point3D(500, 500, 100000),								//coordinateSpread
+					new Point3D(0,0,0)											//velocitySpread
 					);
 
 			group.getChildren().add(obstacle.getEntityGroup());
