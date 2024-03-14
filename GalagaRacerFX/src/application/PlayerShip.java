@@ -2,13 +2,20 @@ package application;
 
 import java.io.File;
 
+import javafx.animation.RotateTransition;
 import javafx.geometry.Point3D;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
+import javafx.util.Duration;
 
 /**
  * The {@code PlayerShip} class represents the player's spaceship in a space racing game.
@@ -31,11 +38,16 @@ import javafx.scene.shape.Shape3D;
  */
 public class PlayerShip {
 
+	private RotateTransition tiltAnimation;
+	
+	private boolean rotateLeft = false;
+	private boolean rotateRight = false;
+
 	private Point3D initPosition;
 	private Point3D currPosition;
 	private Point3D cameraOffset;
 
-	private Shape3D shipModel;
+	private Group shipModel;
 	
 	private GameCamera cameraReference;
 	private PhongMaterial material = new PhongMaterial();
@@ -46,7 +58,7 @@ public class PlayerShip {
 	 * @param playerPos - initial position of player
 	 * @param model		- 3D model used to represent ship
 	 */
-	public PlayerShip(GameCamera c, Point3D playerPos, Shape3D model)
+	public PlayerShip(GameCamera c, Point3D playerPos, Group model)
 	{
 		this.cameraReference = c;
 		this.cameraOffset = new Point3D(0, -20, -120);
@@ -59,17 +71,22 @@ public class PlayerShip {
 
 		Image image = new Image(String.valueOf(new File("file:./src/application/spec.jpg")));
 		material.setDiffuseColor(Color.GRAY);
+		
+        tiltAnimation = new RotateTransition(Duration.millis(200), shipModel);
+        tiltAnimation.setAxis(Rotate.X_AXIS); // Tilt around the X-axis
+        tiltAnimation.setFromAngle(0);
+        tiltAnimation.setToAngle(30); // Adjust the tilt angle as needed
+
+        
 //		material.setSelfIlluminationMap(image);
 		
-		this.shipModel.setMaterial(material);
+//		this.shipModel.setMaterial(material);
 
 		bindCamera();
 	}
 	
 	public void bindUIToPlayer(SubScene s, Point3D offset) {
-		
-		
-		
+			
 		s.translateXProperty().bind(this.shipModel.translateXProperty().add(offset.getX()));
 		s.translateYProperty().bind(this.shipModel.translateYProperty().add(offset.getY()));
 		s.translateZProperty().bind(this.shipModel.translateZProperty().add(offset.getZ()));
@@ -79,6 +96,8 @@ public class PlayerShip {
 //		this.cameraReference.camera.translateXProperty().bind(this.shipModel.translateXProperty().add(cameraOffset.getX()));
 		this.cameraReference.camera.translateYProperty().bind(this.shipModel.translateYProperty().add(cameraOffset.getY()));
 		this.cameraReference.camera.translateZProperty().bind(this.shipModel.translateZProperty().add(cameraOffset.getZ()));
+		
+
 	}
 
 	/**
@@ -165,16 +184,49 @@ public class PlayerShip {
 	
 	public void MovePlayerLeftRight(double speed)
 	{
+//	    if (rotateLeft) {
+//	        rotateShip(-30);
+//	    } else if (rotateRight) {
+//	        rotateShip(30);
+//	    } else {
+//	        rotateShip(0);
+//	    }
 		this.shipModel.setTranslateX(this.shipModel.getTranslateX() + speed);
 		
 		this.currPosition = new Point3D(this.currPosition.getX() + speed, this.currPosition.getY(), this.currPosition.getZ());
+
+	    // Create a new Rotate transformation for X-axis
 		
+
+		
+//	    Rotate rotationX = new Rotate(speed * 0.8, Rotate.Z_AXIS);
+//
+//	    // Apply the new Rotate transformation
+//	    this.shipModel.getTransforms().add(rotationX);
+	    
 		
 		bindCamera();
 	
 	}
 	
+	public void rotationLogicX()
+	{
+	    if (rotateLeft) {
+	        rotateShip(-30);
+	    } else if (rotateRight) {
+	        rotateShip(30);
+	    } else {
+	        rotateShip(0);
+	    }
+	}
 	
+	private void rotateShip(double angle) {
+	    RotateTransition rotateTransition = new RotateTransition(Duration.millis(100), shipModel);
+	    rotateTransition.setToAngle(angle);
+	    rotateTransition.play();
+	}
+
+		
 	public void updateLanePillarsPosition(Lane laneReference)
 	{
 		double tailDistance = this.calculateDistanceToTail(laneReference.getLeftTail().getTranslateZ());
@@ -198,8 +250,22 @@ public class PlayerShip {
 		return hasCollided;
     }
     
+    
+    public boolean hasCollidedObstacle(StaticEntity se)
+    {
+    	boolean hasCollided = false;
+    	for (Object i:se.getEntityList()) {
+    		if (((Node) i).getBoundsInParent().intersects(this.shipModel.getBoundsInParent())) {
+    			hasCollided = true;
+    			break;
+    		}
+    	}
+    	
+		return hasCollided;
+    }
 	
-	
+
+    
 	/**
 	 * Calculates the distance between the player's ship model and the tail pillars of the lane.
 	 * 
@@ -211,7 +277,7 @@ public class PlayerShip {
 	    return (currPosition.getZ() - tailPositionZ);
 	}
 	
-	public Shape3D getShipModel() {
+	public Group getShipModel() {
 		return shipModel;
 	}
 
@@ -222,4 +288,14 @@ public class PlayerShip {
 	public Point3D getCurrPosition() {
 		return currPosition;
 	}
+	
+
+	public void setRotateLeft(boolean value) {
+	    rotateLeft = value;
+	}
+	
+	public void setRotateRight(boolean value) {
+	    rotateRight = value;
+	}
+	
 }

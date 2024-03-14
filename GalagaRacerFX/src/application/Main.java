@@ -2,6 +2,8 @@
 package application;
 import java.io.File;
 
+import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
+
 import application.UI.HUD;
 import application.UI.Menus;
 import application.UI.PauseScreen;
@@ -22,9 +24,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Rotate;
 
 
 public class Main extends Application {
@@ -34,7 +38,6 @@ public class Main extends Application {
 	public static final int HEIGHT 			= 800;
 	
 	public static GameState gameState = GameState.RUNNING;
-
 
 	
 	@Override
@@ -56,8 +59,19 @@ public class Main extends Application {
 			c.setNearFarClip(1, 4000);
 			
 			
+
+			Group model = ModelLoader.loadModel("file:./src/application/Assets/models/spaceship1.obj");
+			
+			model.setScaleX(10.0);
+			model.setScaleY(15.0);
+			model.setScaleZ(20.0);
+
+			model.setTranslateX(0);
+//			model.setTranslateY(-10);
+			model.setTranslateZ(50);
+			
 			// player
-			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
+			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), model);
 			
 			// GUI
 			
@@ -86,35 +100,37 @@ public class Main extends Application {
 			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
 			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
 			
-			// obstacles
-			StaticEntity obstacle = new StaticEntity(
-					asteroidMat,							//material
-					10, 									//radius
-					30, 									//numOfEntities
-					player, 								//playerReference
-					new Point3D(200, 150, 100000),			//coordinateSpread
-					new Point3D(0,0,0)						//velocitySpread
-					);
-			
-			// star particle effect
-			StaticEntity star_particles = new StaticEntity(
-					new PhongMaterial(Color.WHITE),			//material
-					0.4, 									//radius
-					700, 									//numOfEntities
-					player, 								//playerReference
-					new Point3D(500, 500, 100000),			//coordinateSpread
-					new Point3D(0,0,0)						//velocitySpread
-					);
-
-			group.getChildren().add(obstacle.getEntityGroup());
-			group.getChildren().add(star_particles.getEntityGroup());
 			
 			player.setCameraOffset(new Point3D(0, -20, -150));
 			
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 50.0, 0.05);
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
+			
+			// obstacles
+			StaticEntity obstacle = new MovingParticles(
+					asteroidMat,												//material
+					20, 														//radius
+					100, 														//numOfEntities
+					player, 													//playerReference
+					new Point3D(100, 50, 100000),								//coordinateSpread
+					new Point3D(3,3,1 + (controller.getCurrSpeed() / 100))		//velocitySpread
+					);
+			
+			// star particle effect
+			StaticEntity star_particles = new MovingParticles(
+					new PhongMaterial(Color.WHITE),								//material
+					0.4, 														//radius
+					700, 														//numOfEntities
+					player, 													//playerReference
+					new Point3D(500, 500, 100000),								//coordinateSpread
+					new Point3D(0,0,0)											//velocitySpread
+					);
+
+			group.getChildren().add(obstacle.getEntityGroup());
+			group.getChildren().add(star_particles.getEntityGroup());
+			
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
@@ -127,6 +143,9 @@ public class Main extends Application {
 			// UI Offset
 			Point3D UI_Offset = new Point3D((-WIDTH * 1.5) + 605, (-HEIGHT * 1.5) + 280, 500);
 
+			
+//			group.getChildren().add(model);
+			
 //			LightHandler.getAllLightSources(primaryStage);
 			controller.startGameLoop(lane, UI_Offset, c, obstacle, star_particles);
 			

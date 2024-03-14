@@ -95,7 +95,11 @@ public class ControlShip {
 
 	}
 
-    public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
+    public double getCurrSpeed() {
+		return currSpeed;
+	}
+
+	public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -108,13 +112,15 @@ public class ControlShip {
                 	
                     // Update game logic in each frame
                 	updateParticles(); //particles
-                	e.emit(new Point3D(playerReference.getCurrPosition().getX(),playerReference.getCurrPosition().getY() + 5,(playerReference.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
+                	e.emit(new Point3D(playerReference.getCurrPosition().getX(),playerReference.getCurrPosition().getY(),(playerReference.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
                 	
                 	//collision
-                	if (playerReference.hasCollided(lane))
+                	if (playerReference.hasCollided(lane) || playerReference.hasCollidedObstacle(obstacle))
                 	{
                 		System.out.println("Collision Detected!");
                 	}
+                	
+                	playerReference.rotationLogicX();
                 	
                 	// movement
                     if (movingZ) {
@@ -169,7 +175,9 @@ public class ControlShip {
     }
 	
 	private void moveShip()
-	{	if (movingZ)
+	{	
+		
+		if (movingZ)
 		{
 			playerReference.MovePlayerZ(currSpeed);
 			
@@ -213,9 +221,11 @@ public class ControlShip {
                 break;
             case A:
                 this.movingL = true;
+                this.playerReference.setRotateLeft(true);
                 break;
             case D:
                 this.movingR = true;
+                this.playerReference.setRotateRight(true);
                 break;
             case ESCAPE:
             	pause.togglePause();
@@ -231,9 +241,11 @@ public class ControlShip {
             break;
         case A:
             this.movingL = false;
+            this.playerReference.setRotateLeft(false);
             break;
         case D:
             this.movingR = false;
+            this.playerReference.setRotateRight(false);
             break;
         default:
         	break;

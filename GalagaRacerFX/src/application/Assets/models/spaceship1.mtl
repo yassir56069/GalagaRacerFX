@@ -1,0 +1,33 @@
+# Blender 4.0.2 MTL File: 'spaceship krit.blend'
+# www.blender.org
+
+newmtl Material
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 27.750000
+d 1.000000
+illum 3
+Pr 0.554545
+Pm 1.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd C:/Users/PCYas/git/GalagaRacerFX/GalagaRacerFX/src/application/Assets/metallic-surface-texture.jpg
+
+newmtl accent
+Kd 0.010404 0.800055 0.006810
+Ks 0.940945 0.940945 0.940945
+Ke 0.000642 0.003000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+Pr 0.263780
+Pm 1.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.755906
+anisor 0.102362
+Tf 0.811024 0.811024 0.811024
