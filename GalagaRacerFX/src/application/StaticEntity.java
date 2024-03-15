@@ -191,8 +191,33 @@ public class StaticEntity {
 		
 	}
 
+	public void updateEntitiesPositionObstacle()
+	{
+		Point3D entDistance; 
+		
+		
+		for (int index = 0; index < entityVelSize; index++) {
+			moveEntities(index);
+			entDistance = new Point3D( playerReference.getCurrPosition().getX() - getIndexEntityList(index).getTranslateX(), playerReference.getCurrPosition().getY() - getIndexEntityList(index).getTranslateY(),playerReference.getCurrPosition().getZ() - getIndexEntityList(index).getTranslateZ());
 
-
+			if (entDistance.getX() > 100) {
+				placeEntity(index);
+				setVelList(index, generateVelSpread());
+			}
+			
+			if (entDistance.getY() > 100) {
+				placeEntity(index);
+				setVelList(index, generateVelSpread());
+			}
+			
+			if (entDistance.getZ() > 300) {
+				placeEntity(index);
+				setVelList(index, generateVelSpread());
+			}
+		}
+		
+		
+	}
 
 	public void changeSpread(Point3D rndValues) {
 		this.coordinateSpread = rndValues;

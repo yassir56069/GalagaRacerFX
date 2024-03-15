@@ -112,10 +112,10 @@ public class Main extends Application {
 			StaticEntity obstacle = new MovingParticles(
 					asteroidMat,												//material
 					20, 														//radius
-					100, 														//numOfEntities
+					30, 														//numOfEntities
 					player, 													//playerReference
-					new Point3D(100, 50, 100000),								//coordinateSpread
-					new Point3D(3,3,1 + (controller.getCurrSpeed() / 100))		//velocitySpread
+					new Point3D(100, -10, 10000),								//coordinateSpread
+					new Point3D(2,2,0.5)		//velocitySpread
 					);
 			
 			// star particle effect

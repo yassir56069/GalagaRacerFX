@@ -67,7 +67,7 @@ public class StaticModelEntity extends StaticEntity {
 		
 		currentEntity.setTranslateX(((random.nextDouble() - 0.5) * coordinateSpread.getX()));
 		currentEntity.setTranslateY(((random.nextDouble() - 0.5) * coordinateSpread.getY()));
-		currentEntity.setTranslateZ(Math.abs(playerReference.getCurrPosition().getZ() + (random.nextDouble() * coordinateSpread.getZ()) + 5000));
+		currentEntity.setTranslateZ(Math.abs(playerReference.getCurrPosition().getZ() + (random.nextDouble() * coordinateSpread.getZ()) +7000));
 	}
 	
 	@Override
