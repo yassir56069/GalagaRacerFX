@@ -38,10 +38,11 @@ import javafx.util.Duration;
  */
 public class PlayerShip {
 
-	private RotateTransition tiltAnimation;
 	
-	private boolean rotateLeft = false;
+	private boolean rotateLeft  = false;
 	private boolean rotateRight = false;
+	private boolean rotateUp    = false; 
+	private boolean rotateDown  = false;
 
 	private Point3D initPosition;
 	private Point3D currPosition;
@@ -51,6 +52,8 @@ public class PlayerShip {
 	
 	private GameCamera cameraReference;
 	private PhongMaterial material = new PhongMaterial();
+
+
 	
 	/**
 	 * Initializes player ship & it's position.
@@ -71,11 +74,6 @@ public class PlayerShip {
 
 		Image image = new Image(String.valueOf(new File("file:./src/application/spec.jpg")));
 		material.setDiffuseColor(Color.GRAY);
-		
-        tiltAnimation = new RotateTransition(Duration.millis(200), shipModel);
-        tiltAnimation.setAxis(Rotate.X_AXIS); // Tilt around the X-axis
-        tiltAnimation.setFromAngle(0);
-        tiltAnimation.setToAngle(30); // Adjust the tilt angle as needed
 
         
 //		material.setSelfIlluminationMap(image);
@@ -96,7 +94,6 @@ public class PlayerShip {
 //		this.cameraReference.camera.translateXProperty().bind(this.shipModel.translateXProperty().add(cameraOffset.getX()));
 		this.cameraReference.camera.translateYProperty().bind(this.shipModel.translateYProperty().add(cameraOffset.getY()));
 		this.cameraReference.camera.translateZProperty().bind(this.shipModel.translateZProperty().add(cameraOffset.getZ()));
-		
 
 	}
 
@@ -184,48 +181,63 @@ public class PlayerShip {
 	
 	public void MovePlayerLeftRight(double speed)
 	{
-//	    if (rotateLeft) {
-//	        rotateShip(-30);
-//	    } else if (rotateRight) {
-//	        rotateShip(30);
-//	    } else {
-//	        rotateShip(0);
-//	    }
 		this.shipModel.setTranslateX(this.shipModel.getTranslateX() + speed);
 		
 		this.currPosition = new Point3D(this.currPosition.getX() + speed, this.currPosition.getY(), this.currPosition.getZ());
 
-	    // Create a new Rotate transformation for X-axis
+		bindCamera();
+	
+	}
+	
+	public void MovePlayerUpDown(double speed)
+	{
+		this.shipModel.setTranslateY(this.shipModel.getTranslateY() + speed);
 		
+		this.currPosition = new Point3D(this.currPosition.getX(), this.currPosition.getY() + speed, this.currPosition.getZ());
 
-		
-//	    Rotate rotationX = new Rotate(speed * 0.8, Rotate.Z_AXIS);
-//
-//	    // Apply the new Rotate transformation
-//	    this.shipModel.getTransforms().add(rotationX);
-	    
-		
 		bindCamera();
 	
 	}
 	
 	public void rotationLogicX()
 	{
-	    if (rotateLeft) {
-	        rotateShip(-30);
-	    } else if (rotateRight) {
-	        rotateShip(30);
+
+	    
+	    if (rotateUp) {
+	    	rotateShipY(30);
+	    	rotateShipX(0);
+	    } else if (rotateDown) {
+	    	rotateShipY(-30);
+	    	rotateShipX(0);
 	    } else {
-	        rotateShip(0);
+	    	rotateShipY(0);
+	    	rotateShipX(0);
 	    }
+	    
+	    if (rotateLeft) {
+	        rotateShipX(-30);
+	    } else if (rotateRight) {
+	        rotateShipX(30);
+	    } else {
+	        rotateShipX(0);
+	    } 
 	}
+
 	
-	private void rotateShip(double angle) {
+	private void rotateShipX(double angle) {
 	    RotateTransition rotateTransition = new RotateTransition(Duration.millis(100), shipModel);
+	    rotateTransition.setAxis(Rotate.Z_AXIS);
 	    rotateTransition.setToAngle(angle);
 	    rotateTransition.play();
 	}
 
+	private void rotateShipY(double angle) {
+	    RotateTransition rotateTransition = new RotateTransition(Duration.millis(100), shipModel);
+	    rotateTransition.setAxis(Rotate.X_AXIS); 
+	    rotateTransition.setToAngle(angle);
+	    rotateTransition.play();
+	}
+	
 		
 	public void updateLanePillarsPosition(Lane laneReference)
 	{
@@ -296,6 +308,14 @@ public class PlayerShip {
 	
 	public void setRotateRight(boolean value) {
 	    rotateRight = value;
+	}
+	
+	public void setRotateUp(boolean value) {
+	    rotateUp = value;
+	}
+	
+	public void setRotateDown(boolean value) {
+	    rotateDown = value;
 	}
 	
 }

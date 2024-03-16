@@ -33,12 +33,12 @@ public class Menus {
         vbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(0, 0, 10, 0, false), Insets.EMPTY)));
         
         
-        StackPane pauseContent = new StackPane(vbox);
+        StackPane hudContent = new StackPane(vbox);
         
-        pauseContent.setStyle("-fx-background-color: rgba(0, 255, 255, 0.4); -fx-background-radius: 10 0 10 10;"); // Semi-transparent background
+        hudContent.setStyle("-fx-background-color: rgba(0, 255, 255, 0.4); -fx-background-radius: 10 0 10 10;"); // Semi-transparent background
 
         
-        BorderPane p = new BorderPane(pauseContent);
+        BorderPane p = new BorderPane(hudContent);
 
         
         p.setPrefWidth(200);

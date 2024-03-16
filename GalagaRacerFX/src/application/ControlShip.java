@@ -60,7 +60,7 @@ public class ControlShip {
 	private double currSpeed;
 	private double shiftProp; // proportion of speed for left and right movement
 
-	private boolean movingZ, movingL, movingR;
+	private boolean movingZ, movingL, movingR, movingU, movingD;
 
 	//particles
     public List<Particle> particles = new ArrayList<>();
@@ -72,6 +72,8 @@ public class ControlShip {
     // Interface References
     PauseScreen pause;
     HUD hud;
+
+	private double newScore;
     
 	
 	public ControlShip(PlayerShip player, Group gameGroup, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
@@ -80,10 +82,15 @@ public class ControlShip {
 		this.hud = hud;
 		this.playerReference = player;
 		this.gameGroup = gameGroup;
+		
+		this.newScore = 0;
 	
 		this.movingZ = false;
 		this.movingL = false;
 		this.movingR = false;
+        this.movingU = false;
+        this.movingD = false;
+        
 		this.maxSpeed = maxSpeed;
 		this.minSpeed = minSpeed;
 		this.currSpeed = minSpeed;
@@ -100,32 +107,43 @@ public class ControlShip {
 	}
 
 	public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
+		
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-            	
+
+            	newScore = hud.getScore();
             	switch(Main.gameState) {
             	
             	case RUNNING:
-                	
+            		
                 	double particleSpeed = currSpeed / 10;
+                	
                 	
                     // Update game logic in each frame
                 	updateParticles(); //particles
                 	e.emit(new Point3D(playerReference.getCurrPosition().getX(),playerReference.getCurrPosition().getY(),(playerReference.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
                 	
+            		
+                	
                 	//collision
                 	if (playerReference.hasCollided(lane) || playerReference.hasCollidedObstacle(obstacle))
                 	{
                 		System.out.println("Collision Detected!");
+                		newScore -= 50;
+
+                		currSpeed -= 10;
                 	}
-                	
+                	else
+                	{ 
+                		newScore += 1;
+                	}
+
                 	playerReference.rotationLogicX();
-                	
                 	// movement
                     if (movingZ) {
+                    	newScore += 3;
                     	moveShip();
-        
                     }
                     else
                     {
@@ -136,12 +154,17 @@ public class ControlShip {
                     c.bindToCamera(pause.screen, UI_Offset);
                     c.bindToCamera(hud.screen, hud.pos);
                     
-                    obstacle.updateEntitiesPosition();
+                    obstacle.updateEntitiesPositionObstacle();
                     
                     stars.updateEntitiesPosition();
                     
-                    //score
-                    hud.setScore(Math.abs( (int) playerReference.getCurrPosition().getZ() / 1000));
+                    if (newScore < 0 || currSpeed < 0) 
+                    {
+                    	Main.gameState = GameState.GAMEOVER;
+                    }
+                    else {
+                    	hud.setScore((int) newScore);
+                    }
                     
                     
                     break;
@@ -176,7 +199,7 @@ public class ControlShip {
 	
 	private void moveShip()
 	{	
-		
+		System.out.println(playerReference.getCurrPosition().getY());
 		if (movingZ)
 		{
 			playerReference.MovePlayerZ(currSpeed);
@@ -191,6 +214,18 @@ public class ControlShip {
 		if (movingR)
 		{
 			playerReference.MovePlayerLeftRight(currSpeed * shiftProp);
+		}
+		
+		if (movingU)
+		{
+			if (playerReference.getCurrPosition().getY() > -60)
+			playerReference.MovePlayerUpDown((currSpeed * -shiftProp) * 0.25);
+		}
+		
+		if (movingD)
+		{if 
+			(playerReference.getCurrPosition().getY() < 35)
+			playerReference.MovePlayerUpDown((currSpeed * shiftProp) * 0.25);
 		}
 		
 		if (currSpeed < maxSpeed) currSpeed += 0.2;
@@ -227,6 +262,15 @@ public class ControlShip {
                 this.movingR = true;
                 this.playerReference.setRotateRight(true);
                 break;
+            case E:
+            	this.movingU = true;
+            	this.playerReference.setRotateUp(true);
+            	break;
+            case Q:
+            	this.movingD = true;
+            	this.playerReference.setRotateDown(true);
+            	break;                
+                
             case ESCAPE:
             	pause.togglePause();
             default:
@@ -247,6 +291,14 @@ public class ControlShip {
             this.movingR = false;
             this.playerReference.setRotateRight(false);
             break;
+        case E:
+        	this.movingU = false;
+        	this.playerReference.setRotateUp(false);
+        	break;
+        case Q:
+        	this.movingD = false;
+        	this.playerReference.setRotateDown(false);
+        	break;
         default:
         	break;
     }
