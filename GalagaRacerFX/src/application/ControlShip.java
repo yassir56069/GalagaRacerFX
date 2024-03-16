@@ -73,7 +73,7 @@ public class ControlShip {
     PauseScreen pause;
     HUD hud;
 
-	private int newScore;
+	private double newScore;
     
 	
 	public ControlShip(PlayerShip player, Group gameGroup, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
@@ -112,11 +112,10 @@ public class ControlShip {
             @Override
             public void handle(long now) {
 
-            	
+            	newScore = hud.getScore();
             	switch(Main.gameState) {
             	
             	case RUNNING:
-                	newScore = hud.getScore();
             		
                 	double particleSpeed = currSpeed / 10;
                 	
@@ -125,20 +124,25 @@ public class ControlShip {
                 	updateParticles(); //particles
                 	e.emit(new Point3D(playerReference.getCurrPosition().getX(),playerReference.getCurrPosition().getY(),(playerReference.getCurrPosition().getZ() - 100) + currSpeed),  10 + (int) (currSpeed * 0.7), new Point3D(particleSpeed * 0.4, particleSpeed * 0.4, currSpeed * 2));
                 	
-                    int zPosition = (int) playerReference.getCurrPosition().getZ();
-                    int scoreIncrement = zPosition / 1000; 
-
             		
+                	
                 	//collision
                 	if (playerReference.hasCollided(lane) || playerReference.hasCollidedObstacle(obstacle))
                 	{
                 		System.out.println("Collision Detected!");
-                		scoreIncrement -= 10;
+                		newScore -= 50;
+
+                		currSpeed -= 10;
+                	}
+                	else
+                	{ 
+                		newScore += 1;
                 	}
 
                 	playerReference.rotationLogicX();
                 	// movement
                     if (movingZ) {
+                    	newScore += 3;
                     	moveShip();
                     }
                     else
@@ -154,9 +158,14 @@ public class ControlShip {
                     
                     stars.updateEntitiesPosition();
                     
-                    newScore = scoreIncrement;
-
-                    hud.setScore(newScore);
+                    if (newScore < 0 || currSpeed < 0) 
+                    {
+                    	Main.gameState = GameState.GAMEOVER;
+                    }
+                    else {
+                    	hud.setScore((int) newScore);
+                    }
+                    
                     
                     break;
                 case PAUSED:
