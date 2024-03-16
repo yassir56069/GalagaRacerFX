@@ -1,9 +1,11 @@
-package application;
+package application.Entities.GroupedEntities;
 
 import java.util.ArrayList;
 
 import javafx.geometry.Point3D;
 import java.util.Random;
+
+import application.Entities.PlayerShip;
 import javafx.scene.Group;
 import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;

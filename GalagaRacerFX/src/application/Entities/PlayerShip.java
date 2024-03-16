@@ -1,7 +1,8 @@
-package application;
+package application.Entities;
 
 import java.io.File;
 
+import application.State.GameCamera;
 import javafx.geometry.Point3D;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;

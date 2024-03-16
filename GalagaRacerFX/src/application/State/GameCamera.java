@@ -1,4 +1,4 @@
-package application;
+package application.State;
 
 import javafx.geometry.Point3D;
 import javafx.scene.Camera;

@@ -1,4 +1,4 @@
-package application;
+package application.Entities.GroupedEntities;
 
 
 import javafx.geometry.Point3D;
@@ -62,11 +62,11 @@ public class Particle {
         this.speedZ = speedZ; //-this.maxSpeed;
     }
     
-    Sphere getSphere() {
+    public Sphere getSphere() {
         return sphere;
     }
 
-    void update() {
+    public void update() {
         life--;
 
         // Update position based on velocity
@@ -82,7 +82,7 @@ public class Particle {
         sphere.setOpacity(opacity);
     }
 
-    boolean isVisible() {
+    public boolean isVisible() {
         return life > 0;
     }
     
