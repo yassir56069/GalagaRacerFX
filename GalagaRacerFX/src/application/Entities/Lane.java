@@ -1,8 +1,9 @@
-package application;
+package application.Entities;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import application.Util.Util;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;

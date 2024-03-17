@@ -1,7 +1,8 @@
-package application;
+package application.Entities.GroupedEntities.Emitters;
 
 import java.util.List;
 
+import application.Entities.GroupedEntities.Particle;
 import javafx.geometry.Point3D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.Group;

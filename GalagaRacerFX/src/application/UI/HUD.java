@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+
 public class HUD {
 	public BorderPane screen;
 	public int score;
@@ -55,7 +56,6 @@ public class HUD {
 //	    timeline.play();
 	    
 	}
-
 	
     private void updateScoreLabel() {
         // Update the score label on the JavaFX Application Thread

@@ -1,14 +1,13 @@
-package application;
+package application.Light;
 
 import javafx.geometry.Point3D;
+
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.LightBase;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape3D;
 import javafx.stage.Stage;
-
 public class LightHandler {
 
 	

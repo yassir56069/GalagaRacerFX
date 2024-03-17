@@ -1,4 +1,4 @@
-package application;
+package application.Light;
 
 import javafx.geometry.Point3D;
 import javafx.scene.PointLight;

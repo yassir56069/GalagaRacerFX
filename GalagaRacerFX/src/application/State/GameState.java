@@ -1,4 +1,4 @@
-package application;
+package application.State;
 
 public enum GameState {
 	RUNNING,

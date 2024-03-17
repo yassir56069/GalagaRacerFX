@@ -4,9 +4,19 @@ import java.io.File;
 
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
 
+import application.Entities.Lane;
+import application.Entities.PlayerShip;
+import application.Entities.GroupedEntities.MovingParticles;
+import application.Entities.GroupedEntities.StaticEntity;
+import application.Light.LightHandler;
+import application.Light.LightInstance;
+import application.State.ControlShip;
+import application.State.GameCamera;
+import application.State.GameState;
 import application.UI.HUD;
 import application.UI.Menus;
 import application.UI.PauseScreen;
+import application.Util.ModelLoader;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -107,6 +117,7 @@ public class Main extends Application {
 			
 
 			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
+
 			
 			// obstacles
 			StaticEntity obstacle = new MovingParticles(
@@ -165,4 +176,5 @@ public class Main extends Application {
 		launch(args);
 	}
 }
+	
 	

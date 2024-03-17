@@ -1,9 +1,16 @@
-package application;
+package application.State;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import application.Main;
+import application.Entities.Lane;
+import application.Entities.PlayerShip;
+import application.Entities.GroupedEntities.Particle;
+import application.Entities.GroupedEntities.StaticEntity;
+import application.Entities.GroupedEntities.Emitters.Emitter;
+import application.Entities.GroupedEntities.Emitters.ThrustEmitter;
 import application.UI.HUD;
 import application.UI.PauseScreen;
 import javafx.animation.AnimationTimer;

@@ -2,9 +2,9 @@ package application.UI;
 
 import java.util.ArrayList;
 
-import application.GameState;
 import application.Main;
-import application.PlayerShip;
+import application.Entities.PlayerShip;
+import application.State.GameState;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;

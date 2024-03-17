@@ -1,4 +1,4 @@
-package application;
+package application.Util;
 
 /**
  * The {@code Util} class provides a collection of static utility methods
