@@ -42,6 +42,23 @@ public class Main extends Application {
 
 	private Stage primaryStage;
 	
+	private static Main instance;
+	
+	public static Main getInstance() {
+        if (instance == null) {
+            instance = new Main();
+        }
+        return instance;
+    }
+	
+	public void restart() {
+        try {
+            start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -156,14 +173,14 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			
-			
-			
+		
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

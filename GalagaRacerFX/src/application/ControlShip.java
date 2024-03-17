@@ -71,7 +71,7 @@ public class ControlShip {
     
     private Emitter e = new ThrustEmitter(particles, particleGroup);
 
-
+    
     // Interface References
     PauseScreen pause;
     HUD hud;
@@ -138,10 +138,17 @@ public class ControlShip {
 
                 		currSpeed -= 10;
                 		
+                		
                 		// Transition to the game over screen
                         GameOverScreen gameOverScreen = new GameOverScreen(Main.WIDTH, Main.HEIGHT);
                         Scene gameOverScene = new Scene(gameOverScreen);
                         primaryStage.setScene(gameOverScene);
+                        
+                        // Remove the game over screen when starting a new game
+                        gameOverScreen.restartButton.setOnAction(e -> {
+                            gameGroup.getChildren().remove(gameOverScreen);
+                        });
+                        
                 	}
                 	else
                 	{ 
@@ -182,7 +189,7 @@ public class ControlShip {
                     break;
                     
                 case GAMEOVER:
-                    // Additional actions when the game is over
+                	// Additional actions when the game is over
                     break;
             	
             	}
