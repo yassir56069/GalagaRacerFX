@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
@@ -71,6 +72,7 @@ public class ControlShip {
     
     private Emitter e = new ThrustEmitter(particles, particleGroup);
 
+    private AnimationTimer gameLoop;
     
     // Interface References
     PauseScreen pause;
@@ -111,7 +113,7 @@ public class ControlShip {
 	}
 
 	public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
-		
+		final Group capturedGroup = gameGroup; // Capture the gameGroup instance
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -144,11 +146,12 @@ public class ControlShip {
                         Scene gameOverScene = new Scene(gameOverScreen);
                         primaryStage.setScene(gameOverScene);
                         
+                        /**
                         // Remove the game over screen when starting a new game
                         gameOverScreen.restartButton.setOnAction(e -> {
-                            gameGroup.getChildren().remove(gameOverScreen);
+							capturedGroup.getChildren().remove(gameOverScreen);
                         });
-                        
+                        */
                 	}
                 	else
                 	{ 
@@ -198,7 +201,15 @@ public class ControlShip {
         };
         gameLoop.start();
     }
-
+	
+	/**
+	public void stopGameLoop() {
+	    if (gameLoop != null) {
+	    	gameLoop.stop();
+	    }
+	}
+	*/
+	
     public void updateParticles() {
         Iterator<Particle> iterator = particles.iterator();
         while (iterator.hasNext()) {

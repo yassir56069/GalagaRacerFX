@@ -47,6 +47,6 @@ public class GameOverScreen extends VBox {
     
     private void restartGame() {
         // Call the restart method of the Main class
-        Main.getInstance().restart();
+        Main.getInstance().resetGame();
     }
 }

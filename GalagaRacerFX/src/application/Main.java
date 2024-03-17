@@ -1,4 +1,3 @@
-
 package application;
 import java.io.File;
 
@@ -51,13 +50,61 @@ public class Main extends Application {
         return instance;
     }
 	
+	
+	public void resetGame() {
+	    // Reset the game state
+	    Main.gameState = GameState.RUNNING;
+
+	    // Create a new group for the game components
+	    Group group = new Group();
+
+	    Lane lane = new Lane(30, 90, new Point3D(20, 100, 100));
+	    lane.addLaneToGroup(group);
+	    
+	    // Recreate the necessary game components (lane, player, HUD, etc.)
+	    // ...
+
+	    HUD hud = new HUD(new Point3D(((-Main.WIDTH * 0.5) + 100), (- Main.HEIGHT * 0.5) + 65, 1250));
+	    hud = Menus.createHUD(hud);
+	    
+	    Group model = ModelLoader.loadModel("file:./src/application/Assets/models/spaceship1.obj");
+		
+		model.setScaleX(10.0);
+		model.setScaleY(15.0);
+		model.setScaleZ(20.0);
+
+		model.setTranslateX(0);
+//		model.setTranslateY(-10);
+		model.setTranslateZ(50);
+	    
+		GameCamera c = new GameCamera();
+		c.setCamera(0, 0, -10);
+		c.setNearFarClip(1, 4000);
+		
+	    // player
+	 	PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), model);
+	    
+	    // Create a new scene with the group
+	    Scene scene = new Scene(group, WIDTH, HEIGHT, true);
+	    scene.setFill(Color.BLACK);
+
+	    // Set the new scene to the primary stage
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
+	}
+	
+	/**
 	public void restart() {
         try {
-            start(new Stage());
+        	stop(); // Stop the current instance
+            start(new Stage()); // Start a new instance
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+	*/
+	
+	private ControlShip controlShip;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -178,8 +225,14 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-
-
+	/**
+	@Override
+	public void stop() {
+	    if (controlShip != null) {
+	        controlShip.stopGameLoop(); // Stop the game loop or AnimationTimer
+	    }
+	}
+	*/
 	
 	public static void main(String[] args) {
 		launch(args);
