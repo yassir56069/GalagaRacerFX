@@ -35,5 +35,10 @@ To play GalagaRacerFX, follow these steps:
 - Avoid obstacles and navigate through the lanes.
 
 ## Screenshots
-![Game Screenshot](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/9dad897f-ecc4-4a01-8bb5-590e1bf4479f)
+![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/1836f3cf-fbb2-49d5-bba2-458394399e59)
+![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/781443c1-f304-4221-a872-5318bbdd602e)
+![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/c0379aeb-8f68-4965-a43c-fd09e35451ac)
+![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/174dba21-7913-4212-8644-7285c51cbae9)
+![image](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/d558e03c-d67f-417b-ac90-6525f2cf16ae)
+
 
