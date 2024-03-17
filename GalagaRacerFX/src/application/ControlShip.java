@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import application.GameOverScreen.GameOverScreen;
 import application.UI.HUD;
 import application.UI.PauseScreen;
 import javafx.animation.AnimationTimer;
@@ -15,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 
 /**
@@ -51,6 +53,7 @@ import javafx.scene.layout.BorderPane;
  */
 public class ControlShip {
 
+	private Stage primaryStage;
 	private Group gameGroup;
 	
 	private PlayerShip playerReference;
@@ -76,8 +79,9 @@ public class ControlShip {
 	private double newScore;
     
 	
-	public ControlShip(PlayerShip player, Group gameGroup, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
+	public ControlShip(PlayerShip player, Group gameGroup, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp, Stage primaryStage)
 	{
+		this.primaryStage = primaryStage;
 		this.pause = pause;
 		this.hud = hud;
 		this.playerReference = player;
@@ -133,6 +137,11 @@ public class ControlShip {
                 		newScore -= 50;
 
                 		currSpeed -= 10;
+                		
+                		// Transition to the game over screen
+                        GameOverScreen gameOverScreen = new GameOverScreen(Main.WIDTH, Main.HEIGHT);
+                        Scene gameOverScene = new Scene(gameOverScreen);
+                        primaryStage.setScene(gameOverScene);
                 	}
                 	else
                 	{ 

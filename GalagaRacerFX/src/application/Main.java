@@ -7,6 +7,7 @@ import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
 import application.UI.HUD;
 import application.UI.Menus;
 import application.UI.PauseScreen;
+import application.GameOverScreen.GameOverScreen;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -39,9 +40,11 @@ public class Main extends Application {
 	
 	public static GameState gameState = GameState.RUNNING;
 
+	private Stage primaryStage;
 	
 	@Override
 	public void start(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 		try {
 			Lane lane = new Lane(30, 90, new Point3D(20, 100, 100));
 
@@ -106,7 +109,7 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05, primaryStage);
 			
 			// obstacles
 			StaticEntity obstacle = new MovingParticles(
