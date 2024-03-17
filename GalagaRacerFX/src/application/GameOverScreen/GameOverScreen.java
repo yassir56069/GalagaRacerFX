@@ -28,7 +28,6 @@ import javafx.scene.control.Button;
  */
 
 public class GameOverScreen extends VBox {
-    public Button restartButton;
 
     public GameOverScreen(double width, double height) {
         setPrefSize(width, height);
@@ -39,14 +38,7 @@ public class GameOverScreen extends VBox {
         gameOverText.setFont(Font.font("Arial", 72));
         gameOverText.setFill(Color.WHITE);
 
-        restartButton = new Button("Restart");
-        restartButton.setOnAction(e -> restartGame());
-
-        getChildren().addAll(gameOverText, restartButton);
-    }
-    
-    private void restartGame() {
-        // Call the restart method of the Main class
-        Main.getInstance().restart();
+        getChildren().addAll(gameOverText);
     }
 }
+

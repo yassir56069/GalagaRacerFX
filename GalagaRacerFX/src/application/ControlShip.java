@@ -143,12 +143,6 @@ public class ControlShip {
                         GameOverScreen gameOverScreen = new GameOverScreen(Main.WIDTH, Main.HEIGHT);
                         Scene gameOverScene = new Scene(gameOverScreen);
                         primaryStage.setScene(gameOverScene);
-                        
-                        // Remove the game over screen when starting a new game
-                        gameOverScreen.restartButton.setOnAction(e -> {
-                            gameGroup.getChildren().remove(gameOverScreen);
-                        });
-                        
                 	}
                 	else
                 	{ 
