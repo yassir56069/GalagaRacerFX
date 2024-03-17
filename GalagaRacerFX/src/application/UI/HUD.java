@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 
+
 public class HUD {
 	public BorderPane screen;
 	public int score;
@@ -32,12 +33,30 @@ public class HUD {
 		this.score = score;
 		updateScoreLabel();
 	}
-
+	
+	public int getScore() {
+		return score;
+	}
+	
+	public void depleteScore(int score) {
+		setScore(this.score - score);
+		
+		updateScoreLabel();
+//		
+//	    // Change box color for a short duration
+//	    screen.setStyle("-fx-background-color: rgba(255, 0, 0, 0.4); -fx-background-radius: 10 0 10 10;" ); // Change color to red temporarily
+//
+//	    // Create a timeline to revert the color after 200ms
+//	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), new KeyValue(screen.styleProperty(),"-fx-background-color: rgba(0, 255, 255, 0.4); -fx-background-radius: 10 0 10 10;" 
+//	    )));
+//	    timeline.play();
+	    
+	}
 	
     private void updateScoreLabel() {
         // Update the score label on the JavaFX Application Thread
         Platform.runLater(() -> {
-            score_label.setText("Score: " + score);
+            score_label.setText("Score: " + this.score);
         });
     }
 

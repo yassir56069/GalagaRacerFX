@@ -4,6 +4,7 @@ import java.io.File;
 
 import application.Entities.Lane;
 import application.Entities.PlayerShip;
+import application.Entities.GroupedEntities.MovingParticles;
 import application.Entities.GroupedEntities.StaticEntity;
 import application.Light.LightHandler;
 import application.Light.LightInstance;
@@ -13,6 +14,7 @@ import application.State.GameState;
 import application.UI.HUD;
 import application.UI.Menus;
 import application.UI.PauseScreen;
+import application.Util.ModelLoader;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -43,7 +45,6 @@ public class Main extends Application {
 	
 	public static GameState gameState = GameState.RUNNING;
 
-
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -64,8 +65,19 @@ public class Main extends Application {
 			c.setNearFarClip(1, 4000);
 			
 			
+
+			Group model = ModelLoader.loadModel("file:./src/application/Assets/models/spaceship1.obj");
+			
+			model.setScaleX(10.0);
+			model.setScaleY(15.0);
+			model.setScaleZ(20.0);
+
+			model.setTranslateX(0);
+//			model.setTranslateY(-10);
+			model.setTranslateZ(50);
+			
 			// player
-			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), new Sphere(10));
+			PlayerShip player = new PlayerShip(c, new Point3D(0,0,140), model);
 			
 			// GUI
 			
@@ -94,35 +106,37 @@ public class Main extends Application {
 			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
 			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
 			
-			// obstacles
-			StaticEntity obstacle = new StaticEntity(
-					asteroidMat,							//material
-					10, 									//radius
-					30, 									//numOfEntities
-					player, 								//playerReference
-					new Point3D(200, 150, 100000),			//coordinateSpread
-					new Point3D(0,0,0)						//velocitySpread
-					);
-			
-			// star particle effect
-			StaticEntity star_particles = new StaticEntity(
-					new PhongMaterial(Color.WHITE),			//material
-					0.4, 									//radius
-					700, 									//numOfEntities
-					player, 								//playerReference
-					new Point3D(500, 500, 100000),			//coordinateSpread
-					new Point3D(0,0,0)						//velocitySpread
-					);
-
-			group.getChildren().add(obstacle.getEntityGroup());
-			group.getChildren().add(star_particles.getEntityGroup());
 			
 			player.setCameraOffset(new Point3D(0, -20, -150));
 			
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 50.0, 0.05);
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
+			
+			// obstacles
+			StaticEntity obstacle = new MovingParticles(
+					asteroidMat,												//material
+					20, 														//radius
+					30, 														//numOfEntities
+					player, 													//playerReference
+					new Point3D(100, -10, 10000),								//coordinateSpread
+					new Point3D(2,2,0.5)		//velocitySpread
+					);
+			
+			// star particle effect
+			StaticEntity star_particles = new MovingParticles(
+					new PhongMaterial(Color.WHITE),								//material
+					0.4, 														//radius
+					700, 														//numOfEntities
+					player, 													//playerReference
+					new Point3D(500, 500, 100000),								//coordinateSpread
+					new Point3D(0,0,0)											//velocitySpread
+					);
+
+			group.getChildren().add(obstacle.getEntityGroup());
+			group.getChildren().add(star_particles.getEntityGroup());
+			
 			
 			LightHandler.addLightInstance(group, Color.WHITE, new Point3D(0,0,-100));
 			
@@ -135,6 +149,9 @@ public class Main extends Application {
 			// UI Offset
 			Point3D UI_Offset = new Point3D((-WIDTH * 1.5) + 605, (-HEIGHT * 1.5) + 280, 500);
 
+			
+//			group.getChildren().add(model);
+			
 //			LightHandler.getAllLightSources(primaryStage);
 			controller.startGameLoop(lane, UI_Offset, c, obstacle, star_particles);
 			
@@ -154,4 +171,5 @@ public class Main extends Application {
 		launch(args);
 	}
 }
+	
 	
