@@ -16,13 +16,9 @@ import application.UI.HUD;
 import application.UI.PauseScreen;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point3D;
-import javafx.scene.Camera;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 
@@ -61,7 +57,6 @@ import javafx.stage.Stage;
 public class ControlShip {
 
 	private Stage primaryStage;
-	private Group gameGroup;
 	
 	private PlayerShip playerReference;
 	
@@ -87,13 +82,12 @@ public class ControlShip {
 	private double newScore;
     
 	
-	public ControlShip(Stage primaryStage, PlayerShip player, Group gameGroup, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
+	public ControlShip(Stage primaryStage, PlayerShip player, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
 	{
 		this.primaryStage = primaryStage;
 		this.pause = pause;
 		this.hud = hud;
 		this.playerReference = player;
-		this.gameGroup = gameGroup;
 		
 		this.newScore = 0;
 	

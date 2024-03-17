@@ -4,7 +4,6 @@ package application.UI;
 
 import java.io.File;
 
-import application.UI.HUD;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
