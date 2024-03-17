@@ -33,9 +33,9 @@ public class StaticModelEntity extends StaticEntity {
             TriangleMesh asteroidMesh = AsteroidMesh.createAsteroidMesh();
             MeshView asteroidView = new MeshView(asteroidMesh);
             
-            asteroidView.setScaleX(3.0); // Scale factor for the X-axis
-            asteroidView.setScaleY(3.0); // Scale factor for the Y-axis
-            asteroidView.setScaleZ(3.0); // Scale factor for the Z-axis
+            asteroidView.setScaleX(2.0); // Scale factor for the X-axis
+            asteroidView.setScaleY(2.0); // Scale factor for the Y-axis
+            asteroidView.setScaleZ(2.0); // Scale factor for the Z-axis
             asteroidView.setMaterial(material);
 			
 			entityList.add(asteroidView);

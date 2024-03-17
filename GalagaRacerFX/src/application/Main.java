@@ -200,12 +200,8 @@ public class Main extends Application {
 	        pause.screen.setLayoutX(scene.getWidth() - pause.screen.getWidth() / 2);
 	        pause.screen.setLayoutY(scene.getHeight() - pause.screen.getHeight() / 2);
 
-			
-			PhongMaterial asteroidMat = new PhongMaterial();
 
-			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
-			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
-			
+	       
 			
 			player.setCameraOffset(new Point3D(0, -20, -150));
 			
@@ -215,7 +211,15 @@ public class Main extends Application {
 			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
 
 			
+			
 			// obstacles
+			
+			PhongMaterial asteroidMat = new PhongMaterial();
+
+			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
+			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
+			
+
 			StaticEntity obstacle = new MovingParticles(
 					asteroidMat,												//material
 					20, 														//radius
@@ -225,12 +229,19 @@ public class Main extends Application {
 					new Point3D(3,3,0.5)		//velocitySpread
 					);
 			
-			// obstacles
+			
+			// debris
+			PhongMaterial debrisMat = new PhongMaterial();
+			debrisMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/metal_norm.png"))));
+			debrisMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/metal_disp.png"))));
+			
+
+			
 			StaticEntity debris = new StaticModelEntity(
-					asteroidMat,												//material
-					40, 														//numOfEntities
+					debrisMat,												//material
+					100, 														//numOfEntities
 					player, 													//playerReference
-					new Point3D(100, -10, 3000),								//coordinateSpread
+					new Point3D(100, 100, 30000),								//coordinateSpread
 					new Point3D(3,3,0.5)		//velocitySpread
 					);
 			
