@@ -2,11 +2,15 @@ package application.UI;
 
 import java.io.File;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Point3D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 
 public class HUD {

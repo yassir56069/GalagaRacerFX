@@ -2,8 +2,6 @@ package application.Entities;
 
 import java.io.File;
 
-import application.Entities.GroupedEntities.StaticEntity;
-import application.State.GameCamera;
 import javafx.animation.RotateTransition;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
@@ -14,7 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
+import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import javafx.util.Duration;
 
 /**

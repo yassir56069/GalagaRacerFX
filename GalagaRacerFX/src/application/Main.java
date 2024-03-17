@@ -2,6 +2,8 @@
 package application;
 import java.io.File;
 
+import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
+
 import application.Entities.Lane;
 import application.Entities.PlayerShip;
 import application.Entities.GroupedEntities.MovingParticles;
@@ -32,9 +34,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Rotate;
 
 
 public class Main extends Application {
@@ -105,6 +109,14 @@ public class Main extends Application {
 
 			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
 			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
+			
+			
+			player.setCameraOffset(new Point3D(0, -20, -150));
+			
+			group.getChildren().add(player.getShipModel());
+			
+
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
 			
 			
 			player.setCameraOffset(new Point3D(0, -20, -150));
