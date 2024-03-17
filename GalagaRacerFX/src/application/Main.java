@@ -117,14 +117,7 @@ public class Main extends Application {
 			
 
 			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
-			
-			
-			player.setCameraOffset(new Point3D(0, -20, -150));
-			
-			group.getChildren().add(player.getShipModel());
-			
 
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
 			
 			// obstacles
 			StaticEntity obstacle = new MovingParticles(
