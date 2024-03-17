@@ -75,6 +75,7 @@ public class ControlShip {
     
     private Emitter e = new ThrustEmitter(particles, particleGroup);
 
+    
 
     // Interface References
     PauseScreen pause;
@@ -113,7 +114,7 @@ public class ControlShip {
 		return currSpeed;
 	}
 
-	public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars) {
+	public void startGameLoop(Lane lane, Point3D UI_Offset, GameCamera c, StaticEntity obstacle, StaticEntity stars, StaticEntity debris) {
 		
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
@@ -164,6 +165,7 @@ public class ControlShip {
                     obstacle.updateEntitiesPositionObstacle();
                     
                     stars.updateEntitiesPosition();
+                    debris.updateEntitiesPosition();
                     
                     if (newScore < 0 || currSpeed < 0) 
                     {

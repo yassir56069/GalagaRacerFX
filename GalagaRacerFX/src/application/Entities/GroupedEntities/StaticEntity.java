@@ -83,7 +83,6 @@ public class StaticEntity {
 	protected PlayerShip playerReference;
 	
 	
-
     public 	Group entityGroup = new Group();
     
     protected ArrayList<ArrayList<Object>> entityVelList = new ArrayList<>();
