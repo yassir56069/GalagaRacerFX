@@ -3,7 +3,6 @@ package application.Entities.GroupedEntities;
 import java.util.ArrayList;
 
 import application.Entities.PlayerShip;
-import application.Util.ModelLoader;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;

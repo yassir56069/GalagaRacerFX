@@ -4,13 +4,9 @@ import javafx.scene.shape.TriangleMesh;
 
 public class AsteroidMesh {
 
-    private static int numVertices = 0;
-    private static int numFaces = 0;
 
     public static TriangleMesh createAsteroidMesh() {
-        numVertices = 30; // Increase the number of vertices for a more detailed shape
-        numFaces = numVertices / 3; // Assuming each face consists of three vertices
-        
+
         TriangleMesh mesh = new TriangleMesh();
         
         float[] vertices = generateVertexCoordinates();
@@ -50,9 +46,6 @@ public class AsteroidMesh {
     }
 
     private static int[] generateFaces() {
-        // Define faces (indices to vertex coordinates)
-        // Generate triangles based on the vertex coordinates
-        int numFaces = 6; // specify the number of faces
         int[] faces = {
             0, 0, 1, 1, 2, 2, // face 1
             3, 0, 4, 1, 5, 2  // face 2

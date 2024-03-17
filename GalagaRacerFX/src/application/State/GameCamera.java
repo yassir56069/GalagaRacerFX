@@ -3,8 +3,6 @@ package application.State;
 import javafx.geometry.Point3D;
 import javafx.scene.Camera;
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.scene.layout.BorderPane;
 
 /**

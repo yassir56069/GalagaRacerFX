@@ -8,11 +8,6 @@ import java.util.Random;
 import application.Entities.PlayerShip;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.effect.Lighting;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Shape3D;
-import javafx.scene.shape.Sphere;
 
 /**
  * The {@code StaticEntity} class represents a container for entities statically placed within the game environment.

@@ -1,6 +1,5 @@
 package application.Entities;
 
-import java.io.File;
 
 import application.Entities.GroupedEntities.StaticEntity;
 import application.State.GameCamera;
@@ -9,11 +8,9 @@ import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Shape3D;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
@@ -72,7 +69,6 @@ public class PlayerShip {
 		
 
 
-		Image image = new Image(String.valueOf(new File("file:./src/application/spec.jpg")));
 		material.setDiffuseColor(Color.GRAY);
 
         

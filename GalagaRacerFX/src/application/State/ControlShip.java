@@ -11,17 +11,15 @@ import application.Entities.GroupedEntities.Particle;
 import application.Entities.GroupedEntities.StaticEntity;
 import application.Entities.GroupedEntities.Emitters.Emitter;
 import application.Entities.GroupedEntities.Emitters.ThrustEmitter;
+import application.UI.GameOverScreen;
 import application.UI.HUD;
 import application.UI.PauseScreen;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point3D;
-import javafx.scene.Camera;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 
 /**
@@ -58,7 +56,7 @@ import javafx.scene.layout.BorderPane;
  */
 public class ControlShip {
 
-	private Group gameGroup;
+	private Stage primaryStage;
 	
 	private PlayerShip playerReference;
 	
@@ -84,12 +82,12 @@ public class ControlShip {
 	private double newScore;
     
 	
-	public ControlShip(PlayerShip player, Group gameGroup, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
+	public ControlShip(Stage primaryStage, PlayerShip player, HUD hud, PauseScreen pause, Scene scene, double minSpeed, double maxSpeed, double shiftProp)
 	{
+		this.primaryStage = primaryStage;
 		this.pause = pause;
 		this.hud = hud;
 		this.playerReference = player;
-		this.gameGroup = gameGroup;
 		
 		this.newScore = 0;
 	
@@ -184,7 +182,12 @@ public class ControlShip {
                     break;
                     
                 case GAMEOVER:
-                    // Additional actions when the game is over
+            		// Transition to the game over screen
+                    GameOverScreen gameOverScreen = new GameOverScreen(Main.WIDTH, Main.HEIGHT, hud);
+                    Scene gameOverScene = new Scene(gameOverScreen);
+                    primaryStage.setScene(gameOverScene);
+
+                    
                     break;
             	
             	}
