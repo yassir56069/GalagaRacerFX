@@ -115,10 +115,11 @@ public class Main extends Application {
         Image image2 = new Image("file:./src/application/Assets/Tutorial/image2.png");
         Image image3 = new Image("file:./src/application/Assets/Tutorial/image3.png");
         Image image4 = new Image("file:./src/application/Assets/Tutorial/image4.png");
-
+        Image image5 = new Image("file:./src/application/Assets/Tutorial/image5.png");
+        Image image6 = new Image("file:./src/application/Assets/Tutorial/image6.png");
 
         // Initialise image views
-        imageViews = new ImageView[]{new ImageView(image1), new ImageView(image2), new ImageView(image3), new ImageView(image4)};
+        imageViews = new ImageView[]{new ImageView(image1), new ImageView(image2), new ImageView(image3), new ImageView(image4), new ImageView(image5), new ImageView(image6)};
         currentImageIndex = 0;
 
         // Show initial image

@@ -140,6 +140,8 @@ public class ControlShip {
                 		System.out.println("Collision Detected!");
                 		newScore -= 50;
 
+                		 hud.flashRed();
+                		
                 		currSpeed -= 10;
                 	}
                 	else
