@@ -1,9 +1,13 @@
+/** ##Libraries Required:
+ * ObjModelImporter http://www.interactivemesh.org/models/jfx3dimporter.html
+ * JavaFX https://openjfx.io/openjfx-docs/
+ * JRE System Library [JDK 18.0.1++]
+ */
 
 package application;
 import java.io.File;
 
-import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
-
+//local
 import application.Entities.Lane;
 import application.Entities.PlayerShip;
 import application.Entities.GroupedEntities.MovingParticles;
@@ -17,28 +21,16 @@ import application.UI.HUD;
 import application.UI.Menus;
 import application.UI.PauseScreen;
 import application.Util.ModelLoader;
+
+//jfxb
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
 import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
-import javafx.scene.SubScene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.MeshView;
-import javafx.scene.shape.Shape3D;
-import javafx.scene.shape.Sphere;
-import javafx.scene.text.Font;
-import javafx.scene.transform.Rotate;
 
 
 public class Main extends Application {
