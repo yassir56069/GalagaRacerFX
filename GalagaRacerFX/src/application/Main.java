@@ -1,36 +1,40 @@
+/** ##Libraries Required:
+ * ObjModelImporter http://www.interactivemesh.org/models/jfx3dimporter.html
+ * JavaFX https://openjfx.io/openjfx-docs/
+ * JRE System Library [JDK 18.0.1++]
+ */
 
 package application;
 import java.io.File;
+import java.util.Random;
 
-import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
-
+//local
+import application.Entities.Lane;
+import application.Entities.PlayerShip;
+import application.Entities.GroupedEntities.MovingParticles;
+import application.Entities.GroupedEntities.StaticEntity;
+import application.Entities.GroupedEntities.StaticModelEntity;
+import application.Light.LightHandler;
+import application.Light.LightInstance;
+import application.State.ControlShip;
+import application.State.GameCamera;
+import application.State.GameState;
 import application.UI.HUD;
 import application.UI.Menus;
 import application.UI.PauseScreen;
-import application.GameOverScreen.GameOverScreen;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
-import javafx.scene.SubScene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.MeshView;
-import javafx.scene.shape.Shape3D;
-import javafx.scene.shape.Sphere;
-import javafx.scene.text.Font;
-import javafx.scene.transform.Rotate;
-
+import javafx.scene.shape.Circle;
 
 public class Main extends Application {
 	// General convention upheld without code; the FIRST HALF of the boxes are always the right ones.s
@@ -40,12 +44,9 @@ public class Main extends Application {
 	
 	public static GameState gameState = GameState.RUNNING;
 
-	private Stage primaryStage;
 	
-
 	@Override
 	public void start(Stage primaryStage) {
-		this.primaryStage = primaryStage;
 		try {
 			Lane lane = new Lane(30, 90, new Point3D(20, 100, 100));
 
@@ -98,28 +99,47 @@ public class Main extends Application {
 	        pause.screen.setLayoutX(scene.getWidth() - pause.screen.getWidth() / 2);
 	        pause.screen.setLayoutY(scene.getHeight() - pause.screen.getHeight() / 2);
 
-			
-			PhongMaterial asteroidMat = new PhongMaterial();
 
-			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
-			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
-			
+	       
 			
 			player.setCameraOffset(new Point3D(0, -20, -150));
 			
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05, primaryStage);
+			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
 			
 			// obstacles
+			
+			PhongMaterial asteroidMat = new PhongMaterial();
+
+			asteroidMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidBump.png"))));
+			asteroidMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/asteroidDiff.png"))));
+			
+
 			StaticEntity obstacle = new MovingParticles(
 					asteroidMat,												//material
 					20, 														//radius
-					30, 														//numOfEntities
+					20, 														//numOfEntities
 					player, 													//playerReference
-					new Point3D(100, -10, 10000),								//coordinateSpread
-					new Point3D(2,2,0.5)		//velocitySpread
+					new Point3D(100, -10, 3000),								//coordinateSpread
+					new Point3D(3,3,0.5)		//velocitySpread
+					);
+			
+			
+			// debris
+			PhongMaterial debrisMat = new PhongMaterial();
+			debrisMat.setBumpMap(new Image(String.valueOf(new File("file:./src/application/Assets/metal_norm.png"))));
+			debrisMat.setDiffuseMap(new Image(String.valueOf(new File("file:./src/application/Assets/metal_disp.png"))));
+			
+
+			
+			StaticEntity debris = new StaticModelEntity(
+					debrisMat,												//material
+					100, 														//numOfEntities
+					player, 													//playerReference
+					new Point3D(100, 100, 30000),								//coordinateSpread
+					new Point3D(3,3,0.5)		//velocitySpread
 					);
 			
 			// star particle effect
@@ -133,6 +153,7 @@ public class Main extends Application {
 					);
 
 			group.getChildren().add(obstacle.getEntityGroup());
+			group.getChildren().add(debris.getEntityGroup());
 			group.getChildren().add(star_particles.getEntityGroup());
 			
 			
@@ -151,22 +172,60 @@ public class Main extends Application {
 //			group.getChildren().add(model);
 			
 //			LightHandler.getAllLightSources(primaryStage);
-			controller.startGameLoop(lane, UI_Offset, c, obstacle, star_particles);
+			controller.startGameLoop(lane, UI_Offset, c, obstacle, star_particles, debris);
 			
 			primaryStage.setTitle("GalaRacerFx");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-		
+			
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-
-	
 	public static void main(String[] args) {
-		launch(args);
-	}
-}
+        launch(args);
+    }
 	
+    // Method to create falling stars
+    private void createFallingStars(Group group) {
+        Random random = new Random();
+        for (int i = 0; i < NUM_STARS; i++) {
+            // Create a random position for the star
+            double x = random.nextDouble() * WIDTH;
+            double y = random.nextDouble() * HEIGHT;
+            
+            
+            
+         // Create a random radius for the star
+            double radius = random.nextDouble() * 1 + 0.1; // Random radius between 1 and 4
+            
+
+            // Create a small circle representing the star
+            Circle star = new Circle(radius, Color.WHITE);
+            star.setTranslateX(x);
+            star.setTranslateY(y);
+            
+
+            // Add the star to the group
+            group.getChildren().add(star);
+
+            // Define animation for the star
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().addAll(
+                    new KeyFrame(Duration.ZERO, new KeyValue(star.opacityProperty(), 0.5)),
+                    new KeyFrame((Duration.seconds((random.nextDouble() * 20) + 3)), new KeyValue(star.opacityProperty(), 0))
+            );
+
+            // Set up animation to repeat indefinitely
+            timeline.setCycleCount(Timeline.INDEFINITE);
+
+            // Start the animation
+            timeline.play();
+        }
+    }
+
+}
