@@ -26,7 +26,8 @@ import application.Util.ModelLoader;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-//jfxb
+
+//jfx
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.stage.Stage;
@@ -209,7 +210,7 @@ public class Main extends Application {
 			group.getChildren().add(player.getShipModel());
 			
 
-			ControlShip controller = new ControlShip(player, group, hud, pause, scene, 10, 60.0, 0.05);
+			ControlShip controller = new ControlShip(primaryStage, player, group, hud, pause, scene, 10, 80.0, 0.05);
 
 			
 			
@@ -223,10 +224,10 @@ public class Main extends Application {
 
 			StaticEntity obstacle = new MovingParticles(
 					asteroidMat,												//material
-					20, 														//radius
-					20, 														//numOfEntities
+					30, 														//radius
+					15, 														//numOfEntities
 					player, 													//playerReference
-					new Point3D(100, -10, 3000),								//coordinateSpread
+					new Point3D(100, -10, 6000),								//coordinateSpread
 					new Point3D(3,3,0.5)		//velocitySpread
 					);
 			

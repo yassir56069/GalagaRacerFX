@@ -18,7 +18,7 @@ public class HUD {
 	public BorderPane screen;
 	public int score;
 	public Point3D pos;
-	public Label score_label = new Label("Score: " + 0);;
+	public Label score_label = new Label("Score: " + 0);
 	
 	private Font font;
 	
