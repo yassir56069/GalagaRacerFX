@@ -11,7 +11,7 @@
 - GameOverScreen
 - Report
 
-# Kritika Bisseseur
+# Kritika Bissessur
 - Static Interface
 - Pause Screen
 - Title Screen
