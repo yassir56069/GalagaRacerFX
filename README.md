@@ -2,23 +2,18 @@
 
 ![Game Logo](https://github.com/yassir56069/GalagaRacerFX/assets/62571794/54b238be-1c21-47d5-9012-9b765094eeba)
 
-## Repartition Of Work
 
-# Jameel Edoo
+# Yassir Hoossan Buksh
 - UI Logic
 - Refactoring
 - Lighting
 - GameOverScreen
 - Report
-
-# Kritika Bissessur
 - Static Interface
 - Pause Screen
 - Title Screen
 - Camera
 - Report
-
-# Yassir Hoossan Buksh
 - Entities
 - State
 - Main
